@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gxa.internetfinance.mapper.ParameterMapper">
+    <resultMap id="ParameterMap" type="com.gxa.internetfinance.pojo.po.Parameter">
+        <result column="parameter_id" jdbcType="INTEGER" property="id"/>
+        <result column="parameter_type" jdbcType="VARCHAR" property="type"/>
+        <result column="parameter_name" jdbcType="VARCHAR" property="name"/>
+        <result column="parameter_value" jdbcType="INTEGER" property="value"/>
+        <result column="parameter_desc" jdbcType="VARCHAR" property="desc"/>
+        <result column="parameter_update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+    </resultMap>
+
+    <sql id="PARAMETER_BASE_COLUMNS">
+        parameter_id,parameter_type,parameter_name,parameter_value,parameter_desc,parameter_updateTime
+    </sql>
+
+    <!--    <select id="selectAll" parameterType="integer" resultMap="ParameterMap">-->
+    <!--        select * from tb_parameter limit #{arg0};-->
+    <!--    </select>-->
+
+    <select id="selectParamConfig" resultMap="ParameterMap">
+        select * from tb_parameter
+        <where>
+            <if test="name != null and name != ''">
+                <bind name="name" value="'%'+name+'%'"/>
+                parameter_name like #{name}
+            </if>
+        </where>
+        order by parameter_id desc limit #{page},#{size}
+    </select>
+
+    <select id="countCondition" resultType="Integer">
+        select count(*) from tb_parameter
+        <where>
+            <if test="name != null and name != ''">
+                <bind name="name" value="'%'+name+'%'"/>
+                parameter_name like #{name}
+            </if>
+        </where>
+        order by parameter_id desc
+    </select>
+
+    <update id="update" parameterType="com.gxa.internetfinance.pojo.po.Parameter">
+        update tb_parameter
+        set parameter_type=#{type,jdbcType=VARCHAR},
+            parameter_name=#{name,jdbcType=VARCHAR},
+            parameter_value=#{value,jdbcType=INTEGER},
+            parameter_desc=#{desc,jdbcType=VARCHAR},
+            parameter_update_time=#{updateTime,jdbcType=TIMESTAMP}
+        where parameter_id = #{id,jdbcType=INTEGER}
+    </update>
+
+    <insert id="addParam" parameterType="com.gxa.internetfinance.pojo.po.Parameter">
+        insert into tb_parameter(parameter_type, parameter_name, parameter_value, parameter_desc)
+        VALUES (#{type},#{name},#{value},#{desc})
+    </insert>
+
+    <delete id="deleteParam" parameterType="integer">
+        delete from tb_parameter where parameter_id = #{id}
+    </delete>
+
+
+</mapper>

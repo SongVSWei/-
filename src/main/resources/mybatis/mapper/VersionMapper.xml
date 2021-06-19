@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gxa.internetfinance.mapper.VersionMapper">
+    <resultMap id="VersionResultMap" type="com.gxa.internetfinance.pojo.po.Version">
+        <id column="version_id" jdbcType="INTEGER" property="id"/>
+        <result column="version_name" jdbcType="VARCHAR" property="name"/>
+        <result column="version_UpdateDesc" jdbcType="VARCHAR" property="updateDesc"/>
+        <result column="version_expireTime" jdbcType="DATE" property="expireTime"/>
+        <result column="version_inEffective" jdbcType="BIT" property="inEffective"/>
+        <result column="version_number" jdbcType="VARCHAR" property="number"/>
+        <result column="version_platform" jdbcType="VARCHAR" property="platform"/>
+
+        <result column="version_uploadApplication" jdbcType="VARCHAR" property="uploadApplication"/>
+        <result column="version_uploadOffcial" jdbcType="VARCHAR" property="uploadOffcial"/>
+        <result column="version_uploadone" jdbcType="VARCHAR" property="uploadone"/>
+        <result column="version_uploadTwo" jdbcType="VARCHAR" property="uploadTwo"/>
+
+    </resultMap>
+
+
+    <select id="selectByPrimaryKey" parameterType="map" resultMap="VersionResultMap">
+        select *
+        from tb_version
+        <where>
+            <if test="inEffective!=2 ">
+                and version_inEffective= #{inEffective}
+            </if>
+
+        </where>
+        limit   #{page},#{size}
+
+    </select>
+    <select id="selectCount" parameterType="map" resultType="int">
+        select count(*)
+        from tb_version
+        <where>
+            <if test=" inEffective!=2 ">
+                and version_inEffective= #{inEffective}
+            </if>
+
+        </where>
+
+
+    </select>
+
+
+</mapper>

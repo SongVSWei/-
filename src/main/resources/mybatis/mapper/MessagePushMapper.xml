@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gxa.internetfinance.mapper.MessagePushMapper">
+    <resultMap id="MessagePushMap" type="com.gxa.internetfinance.pojo.po.MessagePush">
+        <id column="mp_id" property="id" javaType="Integer" jdbcType="INTEGER"/>
+        <result column="mp_title" property="title" javaType="String"></result>
+        <result column="mp_type" property="type" javaType="String"/>
+        <result column="mp_content" property="content" javaType="String"></result>
+        <result column="mp_object" property="object" javaType="String"></result>
+        <result column="mp_status" property="status" javaType="String"></result>
+        <result column="mp_number" property="number" javaType="String"></result>
+        <result column="mp_addTime" property="addTime" javaType="java.util.Date"></result>
+    </resultMap>
+    <insert id="insert" parameterType="com.gxa.internetfinance.pojo.po.MessagePush">
+        insert into tb_messagepush(mp_title, mp_type, mp_content,
+                                   mp_object, mp_status,
+                                   mp_number,mp_addTime)
+        values (#{title},#{type},#{content},
+                #{object},#{status},#{number},
+                #{addTime})
+    </insert>
+    <select id="pageCondition" resultMap="MessagePushMap">
+        select * from  tb_messagepush
+        <where>
+            <if test="title!=null">
+                <bind name="title" value="'%'+title+'%'"/>
+                and mp_title like #{title}
+            </if>
+            <if test="status!=null">
+                <bind name="status" value="'%'+status+'%'"/>
+                and mp_status like #{status}
+            </if>
+        </where>
+        order by mp_id desc
+        limit #{current},#{limit}
+    </select>
+
+</mapper>

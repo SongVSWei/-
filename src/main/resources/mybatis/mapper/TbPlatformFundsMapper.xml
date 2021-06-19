@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gxa.internetfinance.mapper.TbPlatformFundsMapper">
+  <resultMap id="BaseResultMap" type="com.gxa.internetfinance.pojo.po.TbPlatformFunds">
+    <id column="tb_platform_funds_id" jdbcType="INTEGER" property="tbPlatformFundsId" />
+    <result column="tb_platform_funds_serial_number" jdbcType="VARCHAR" property="tbPlatformFundsSerialNumber" />
+    <result column="tb_platform_funds_transaction_type" jdbcType="VARCHAR" property="tbPlatformFundsTransactionType" />
+    <result column="tb_platform_funds_accounts" jdbcType="VARCHAR" property="tbPlatformFundsAccounts" />
+    <result column="tb_platform_funds_money" jdbcType="DECIMAL" property="tbPlatformFundsMoney" />
+    <result column="tb_platform_funds_poundage" jdbcType="DECIMAL" property="tbPlatformFundsPoundage" />
+    <result column="tb_platform_funds_before_money_account" jdbcType="DECIMAL" property="tbPlatformFundsBeforeMoneyAccount" />
+    <result column="tb_platform_funds_after_money_account" jdbcType="DECIMAL" property="tbPlatformFundsAfterMoneyAccount" />
+    <result column="tb_platform_funds_status" jdbcType="TINYINT" property="tbPlatformFundsStatus" />
+    <result column="tb_platform_funds_desc" jdbcType="VARCHAR" property="tbPlatformFundsDesc" />
+    <result column="tb_platform_funds_time" jdbcType="TIMESTAMP" property="tbPlatformFundsTime" />
+    <result column="tb_platform_funds_money_account" jdbcType="DECIMAL" property="tbPlatformFundsMoneyAccount" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    tb_platform_funds_id, tb_platform_funds_serial_number, tb_platform_funds_transaction_type, 
+    tb_platform_funds_accounts, tb_platform_funds_money, tb_platform_funds_poundage, 
+    tb_platform_funds_before_money_account, tb_platform_funds_after_money_account, tb_platform_funds_status, 
+    tb_platform_funds_desc, tb_platform_funds_time, tb_platform_funds_money_account
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from tb_platform_funds
+    where tb_platform_funds_id = #{tbPlatformFundsId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from tb_platform_funds
+    where tb_platform_funds_id = #{tbPlatformFundsId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" keyColumn="tb_platform_funds_id" keyProperty="tbPlatformFundsId" parameterType="com.gxa.internetfinance.pojo.po.TbPlatformFunds" useGeneratedKeys="true">
+    insert into tb_platform_funds (tb_platform_funds_serial_number, tb_platform_funds_transaction_type, 
+      tb_platform_funds_accounts, tb_platform_funds_money, 
+      tb_platform_funds_poundage, tb_platform_funds_before_money_account, 
+      tb_platform_funds_after_money_account, tb_platform_funds_status, 
+      tb_platform_funds_desc, tb_platform_funds_time, 
+      tb_platform_funds_money_account)
+    values (#{tbPlatformFundsSerialNumber,jdbcType=VARCHAR}, #{tbPlatformFundsTransactionType,jdbcType=VARCHAR}, 
+      #{tbPlatformFundsAccounts,jdbcType=VARCHAR}, #{tbPlatformFundsMoney,jdbcType=DECIMAL}, 
+      #{tbPlatformFundsPoundage,jdbcType=DECIMAL}, #{tbPlatformFundsBeforeMoneyAccount,jdbcType=DECIMAL}, 
+      #{tbPlatformFundsAfterMoneyAccount,jdbcType=DECIMAL}, #{tbPlatformFundsStatus,jdbcType=TINYINT}, 
+      #{tbPlatformFundsDesc,jdbcType=VARCHAR}, #{tbPlatformFundsTime,jdbcType=TIMESTAMP}, 
+      #{tbPlatformFundsMoneyAccount,jdbcType=DECIMAL})
+  </insert>
+  <insert id="insertSelective" keyColumn="tb_platform_funds_id" keyProperty="tbPlatformFundsId" parameterType="com.gxa.internetfinance.pojo.po.TbPlatformFunds" useGeneratedKeys="true">
+    insert into tb_platform_funds
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="tbPlatformFundsSerialNumber != null">
+        tb_platform_funds_serial_number,
+      </if>
+      <if test="tbPlatformFundsTransactionType != null">
+        tb_platform_funds_transaction_type,
+      </if>
+      <if test="tbPlatformFundsAccounts != null">
+        tb_platform_funds_accounts,
+      </if>
+      <if test="tbPlatformFundsMoney != null">
+        tb_platform_funds_money,
+      </if>
+      <if test="tbPlatformFundsPoundage != null">
+        tb_platform_funds_poundage,
+      </if>
+      <if test="tbPlatformFundsBeforeMoneyAccount != null">
+        tb_platform_funds_before_money_account,
+      </if>
+      <if test="tbPlatformFundsAfterMoneyAccount != null">
+        tb_platform_funds_after_money_account,
+      </if>
+      <if test="tbPlatformFundsStatus != null">
+        tb_platform_funds_status,
+      </if>
+      <if test="tbPlatformFundsDesc != null">
+        tb_platform_funds_desc,
+      </if>
+      <if test="tbPlatformFundsTime != null">
+        tb_platform_funds_time,
+      </if>
+      <if test="tbPlatformFundsMoneyAccount != null">
+        tb_platform_funds_money_account,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="tbPlatformFundsSerialNumber != null">
+        #{tbPlatformFundsSerialNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="tbPlatformFundsTransactionType != null">
+        #{tbPlatformFundsTransactionType,jdbcType=VARCHAR},
+      </if>
+      <if test="tbPlatformFundsAccounts != null">
+        #{tbPlatformFundsAccounts,jdbcType=VARCHAR},
+      </if>
+      <if test="tbPlatformFundsMoney != null">
+        #{tbPlatformFundsMoney,jdbcType=DECIMAL},
+      </if>
+      <if test="tbPlatformFundsPoundage != null">
+        #{tbPlatformFundsPoundage,jdbcType=DECIMAL},
+      </if>
+      <if test="tbPlatformFundsBeforeMoneyAccount != null">
+        #{tbPlatformFundsBeforeMoneyAccount,jdbcType=DECIMAL},
+      </if>
+      <if test="tbPlatformFundsAfterMoneyAccount != null">
+        #{tbPlatformFundsAfterMoneyAccount,jdbcType=DECIMAL},
+      </if>
+      <if test="tbPlatformFundsStatus != null">
+        #{tbPlatformFundsStatus,jdbcType=TINYINT},
+      </if>
+      <if test="tbPlatformFundsDesc != null">
+        #{tbPlatformFundsDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="tbPlatformFundsTime != null">
+        #{tbPlatformFundsTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="tbPlatformFundsMoneyAccount != null">
+        #{tbPlatformFundsMoneyAccount,jdbcType=DECIMAL},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.gxa.internetfinance.pojo.po.TbPlatformFunds">
+    update tb_platform_funds
+    <set>
+      <if test="tbPlatformFundsSerialNumber != null">
+        tb_platform_funds_serial_number = #{tbPlatformFundsSerialNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="tbPlatformFundsTransactionType != null">
+        tb_platform_funds_transaction_type = #{tbPlatformFundsTransactionType,jdbcType=VARCHAR},
+      </if>
+      <if test="tbPlatformFundsAccounts != null">
+        tb_platform_funds_accounts = #{tbPlatformFundsAccounts,jdbcType=VARCHAR},
+      </if>
+      <if test="tbPlatformFundsMoney != null">
+        tb_platform_funds_money = #{tbPlatformFundsMoney,jdbcType=DECIMAL},
+      </if>
+      <if test="tbPlatformFundsPoundage != null">
+        tb_platform_funds_poundage = #{tbPlatformFundsPoundage,jdbcType=DECIMAL},
+      </if>
+      <if test="tbPlatformFundsBeforeMoneyAccount != null">
+        tb_platform_funds_before_money_account = #{tbPlatformFundsBeforeMoneyAccount,jdbcType=DECIMAL},
+      </if>
+      <if test="tbPlatformFundsAfterMoneyAccount != null">
+        tb_platform_funds_after_money_account = #{tbPlatformFundsAfterMoneyAccount,jdbcType=DECIMAL},
+      </if>
+      <if test="tbPlatformFundsStatus != null">
+        tb_platform_funds_status = #{tbPlatformFundsStatus,jdbcType=TINYINT},
+      </if>
+      <if test="tbPlatformFundsDesc != null">
+        tb_platform_funds_desc = #{tbPlatformFundsDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="tbPlatformFundsTime != null">
+        tb_platform_funds_time = #{tbPlatformFundsTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="tbPlatformFundsMoneyAccount != null">
+        tb_platform_funds_money_account = #{tbPlatformFundsMoneyAccount,jdbcType=DECIMAL},
+      </if>
+    </set>
+    where tb_platform_funds_id = #{tbPlatformFundsId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.gxa.internetfinance.pojo.po.TbPlatformFunds">
+    update tb_platform_funds
+    set tb_platform_funds_serial_number = #{tbPlatformFundsSerialNumber,jdbcType=VARCHAR},
+      tb_platform_funds_transaction_type = #{tbPlatformFundsTransactionType,jdbcType=VARCHAR},
+      tb_platform_funds_accounts = #{tbPlatformFundsAccounts,jdbcType=VARCHAR},
+      tb_platform_funds_money = #{tbPlatformFundsMoney,jdbcType=DECIMAL},
+      tb_platform_funds_poundage = #{tbPlatformFundsPoundage,jdbcType=DECIMAL},
+      tb_platform_funds_before_money_account = #{tbPlatformFundsBeforeMoneyAccount,jdbcType=DECIMAL},
+      tb_platform_funds_after_money_account = #{tbPlatformFundsAfterMoneyAccount,jdbcType=DECIMAL},
+      tb_platform_funds_status = #{tbPlatformFundsStatus,jdbcType=TINYINT},
+      tb_platform_funds_desc = #{tbPlatformFundsDesc,jdbcType=VARCHAR},
+      tb_platform_funds_time = #{tbPlatformFundsTime,jdbcType=TIMESTAMP},
+      tb_platform_funds_money_account = #{tbPlatformFundsMoneyAccount,jdbcType=DECIMAL}
+    where tb_platform_funds_id = #{tbPlatformFundsId,jdbcType=INTEGER}
+  </update>
+  <select id="selectByAll" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from tb_platform_funds
+    where tb_platform_funds_id>0
+    <if test="tbPlatformFundsPram.tbTransactionSerialNumber != null and tbPlatformFundsPram.tbTransactionSerialNumber != ''">
+      and tb_platform_funds_serial_number = #{tbPlatformFundsPram.tbTransactionSerialNumber}
+    </if>
+    <if test="tbPlatformFundsPram.tbPlatformFundsTransactionType != null and tbPlatformFundsPram.tbPlatformFundsTransactionType != ''">
+      and tb_platform_funds_transaction_type like concat('%',#{tbPlatformFundsPram.tbPlatformFundsTransactionType},'%')
+    </if>
+    <if test="tbPlatformFundsPram.tbStartTime != null">
+      and  tb_platform_funds_time &gt;= #{tbPlatformFundsPram.tbStartTime}
+    </if>
+    <if test="tbPlatformFundsPram.tbEndTime != null">
+      and tb_platform_funds_time &lt;= #{tbPlatformFundsPram.tbEndTime}
+    </if>
+    order by tb_platform_funds_id desc
+  </select>
+
+  <resultMap id="Account1" type="com.gxa.internetfinance.pojo.po.TbPlatformFunds">
+    <id column="tb_platform_funds_id" jdbcType="INTEGER" property="tbPlatformFundsId" />
+    <result column="tb_platform_funds_money_account" jdbcType="DECIMAL" property="tbPlatformFundsMoneyAccount" />
+  </resultMap>
+    <select id="selectByAccount" resultType="com.gxa.internetfinance.pojo.po.TbPlatformFunds">
+      select tb_platform_funds_id,tb_platform_funds_money_account
+      from tb_platform_funds
+      where tb_platform_funds_id = (SELECT max(tb_platform_funds_id) FROM tb_platform_funds)
+    </select>
+</mapper>

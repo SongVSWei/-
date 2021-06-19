@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gxa.internetfinance.mapper.TbUserMapper">
+
+    <resultMap type="com.gxa.internetfinance.pojo.po.TbUser" id="TbUserMap">
+        <result property="userId" column="user_id" jdbcType="INTEGER"/>
+        <result property="userName" column="user_name" jdbcType="VARCHAR"/>
+        <result property="userPhone" column="user_phone" jdbcType="VARCHAR"/>
+        <result property="userPwd" column="user_pwd" jdbcType="VARCHAR"/>
+        <result property="userIdstatus" column="user_idStatus" jdbcType="VARCHAR"/>
+        <result property="userIdnum" column="user_idNum" jdbcType="VARCHAR"/>
+        <result property="userGender" column="user_gender" jdbcType="VARCHAR"/>
+        <result property="userEmail" column="user_email" jdbcType="VARCHAR"/>
+        <result property="userLegalpersonname" column="user_legalPersonName" jdbcType="VARCHAR"/>
+        <result property="userTagregname" column="user_tagRegName" jdbcType="VARCHAR"/>
+        <result property="userReferrer" column="user_referrer" jdbcType="VARCHAR"/>
+        <result property="userLockstatus" column="user_lockStatus" jdbcType="VARCHAR"/>
+        <result property="userRegtime" column="user_regTime" jdbcType="TIMESTAMP"/>
+        <result property="userLogintime" column="user_loginTime" jdbcType="TIMESTAMP"/>
+        <result property="userResource" column="user_resource" jdbcType="VARCHAR"/>
+        <result property="userRole" column="user_role" jdbcType="VARCHAR"/>
+        <result property="userUsertype" column="user_userType" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="TbUserMap">
+        select user_id,
+               user_name,
+               user_phone,
+               user_pwd,
+               user_idStatus,
+               user_idNum,
+               user_gender,
+               user_email,
+               user_legalPersonName,
+               user_tagRegName,
+               user_referrer,
+               user_lockStatus,
+               user_regTime,
+               user_loginTime,
+               user_resource,
+               user_role,
+               user_userType
+        from internetfinance.tb_user
+        where user_id = #{userId}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="TbUserMap">
+        select user_id,
+               user_name,
+               user_phone,
+               user_pwd,
+               user_idStatus,
+               user_idNum,
+               user_gender,
+               user_email,
+               user_legalPersonName,
+               user_tagRegName,
+               user_referrer,
+               user_lockStatus,
+               user_regTime,
+               user_loginTime,
+               user_resource,
+               user_role,
+               user_userType
+        from internetfinance.tb_user
+        limit #{offset}, #{limit}
+    </select>
+
+    <!--通过实体作为筛选条件查询-->
+    <select id="queryAll" resultMap="TbUserMap">
+        select
+        user_id, user_name, user_phone, user_pwd, user_idStatus, user_idNum, user_gender, user_email,
+        user_legalPersonName, user_tagRegName, user_referrer, user_lockStatus, user_regTime, user_loginTime,
+        user_resource, user_role, user_userType
+        from internetfinance.tb_user
+        <where>
+            <if test="userId != null">
+                and user_id = #{userId}
+            </if>
+            <if test="userName != null and userName != ''">
+                and user_name = #{userName}
+            </if>
+            <if test="userPhone != null and userPhone != ''">
+                and user_phone = #{userPhone}
+            </if>
+            <if test="userPwd != null and userPwd != ''">
+                and user_pwd = #{userPwd}
+            </if>
+            <if test="userIdstatus != null and userIdstatus != ''">
+                and user_idStatus = #{userIdstatus}
+            </if>
+            <if test="userIdnum != null and userIdnum != ''">
+                and user_idNum = #{userIdnum}
+            </if>
+            <if test="userGender != null and userGender != ''">
+                and user_gender = #{userGender}
+            </if>
+            <if test="userEmail != null and userEmail != ''">
+                and user_email = #{userEmail}
+            </if>
+            <if test="userLegalpersonname != null and userLegalpersonname != ''">
+                and user_legalPersonName = #{userLegalpersonname}
+            </if>
+            <if test="userTagregname != null and userTagregname != ''">
+                and user_tagRegName = #{userTagregname}
+            </if>
+            <if test="userReferrer != null and userReferrer != ''">
+                and user_referrer = #{userReferrer}
+            </if>
+            <if test="userLockstatus != null and userLockstatus != ''">
+                and user_lockStatus = #{userLockstatus}
+            </if>
+            <if test="userRegtime != null">
+                and user_regTime = #{userRegtime}
+            </if>
+            <if test="userLogintime != null">
+                and user_loginTime = #{userLogintime}
+            </if>
+            <if test="userResource != null and userResource != ''">
+                and user_resource = #{userResource}
+            </if>
+            <if test="userRole != null and userRole != ''">
+                and user_role = #{userRole}
+            </if>
+            <if test="userUsertype != null and userUsertype != ''">
+                and user_userType = #{userUsertype}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="userId" useGeneratedKeys="true">
+        insert into internetfinance.tb_user(user_name, user_phone, user_pwd, user_idStatus, user_idNum, user_gender,
+                                            user_email, user_legalPersonName, user_tagRegName, user_referrer,
+                                            user_lockStatus, user_regTime, user_loginTime, user_resource, user_role,
+                                            user_userType)
+        values (#{userName}, #{userPhone}, #{userPwd}, #{userIdstatus}, #{userIdnum}, #{userGender}, #{userEmail},
+                #{userLegalpersonname}, #{userTagregname}, #{userReferrer}, #{userLockstatus}, #{userRegtime},
+                #{userLogintime}, #{userResource}, #{userRole}, #{userUsertype})
+    </insert>
+
+    <insert id="insertBatch" keyProperty="userId" useGeneratedKeys="true">
+        insert into internetfinance.tb_user(user_name, user_phone, user_pwd, user_idStatus, user_idNum, user_gender,
+        user_email, user_legalPersonName, user_tagRegName, user_referrer, user_lockStatus, user_regTime, user_loginTime,
+        user_resource, user_role, user_userType)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+            (#{entity.userName}, #{entity.userPhone}, #{entity.userPwd}, #{entity.userIdstatus}, #{entity.userIdnum},
+            #{entity.userGender}, #{entity.userEmail}, #{entity.userLegalpersonname}, #{entity.userTagregname},
+            #{entity.userReferrer}, #{entity.userLockstatus}, #{entity.userRegtime}, #{entity.userLogintime},
+            #{entity.userResource}, #{entity.userRole}, #{entity.userUsertype})
+        </foreach>
+    </insert>
+
+    <insert id="insertOrUpdateBatch" keyProperty="userId" useGeneratedKeys="true">
+        insert into internetfinance.tb_user(user_name, user_phone, user_pwd, user_idStatus, user_idNum, user_gender,
+        user_email, user_legalPersonName, user_tagRegName, user_referrer, user_lockStatus, user_regTime, user_loginTime,
+        user_resource, user_role, user_userType)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+            (#{entity.userName}, #{entity.userPhone}, #{entity.userPwd}, #{entity.userIdstatus}, #{entity.userIdnum},
+            #{entity.userGender}, #{entity.userEmail}, #{entity.userLegalpersonname}, #{entity.userTagregname},
+            #{entity.userReferrer}, #{entity.userLockstatus}, #{entity.userRegtime}, #{entity.userLogintime},
+            #{entity.userResource}, #{entity.userRole}, #{entity.userUsertype})
+        </foreach>
+        on duplicate key update
+        user_name = values(user_name) , user_phone = values(user_phone) , user_pwd = values(user_pwd) , user_idStatus =
+        values(user_idStatus) , user_idNum = values(user_idNum) , user_gender = values(user_gender) , user_email =
+        values(user_email) , user_legalPersonName = values(user_legalPersonName) , user_tagRegName =
+        values(user_tagRegName) , user_referrer = values(user_referrer) , user_lockStatus = values(user_lockStatus) ,
+        user_regTime = values(user_regTime) , user_loginTime = values(user_loginTime) , user_resource =
+        values(user_resource) , user_role = values(user_role) , user_userType = values(user_userType)
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update internetfinance.tb_user
+        <set>
+            <if test="userName != null and userName != ''">
+                user_name = #{userName},
+            </if>
+            <if test="userPhone != null and userPhone != ''">
+                user_phone = #{userPhone},
+            </if>
+            <if test="userPwd != null and userPwd != ''">
+                user_pwd = #{userPwd},
+            </if>
+            <if test="userIdstatus != null and userIdstatus != ''">
+                user_idStatus = #{userIdstatus},
+            </if>
+            <if test="userIdnum != null and userIdnum != ''">
+                user_idNum = #{userIdnum},
+            </if>
+            <if test="userGender != null and userGender != ''">
+                user_gender = #{userGender},
+            </if>
+            <if test="userEmail != null and userEmail != ''">
+                user_email = #{userEmail},
+            </if>
+            <if test="userLegalpersonname != null and userLegalpersonname != ''">
+                user_legalPersonName = #{userLegalpersonname},
+            </if>
+            <if test="userTagregname != null and userTagregname != ''">
+                user_tagRegName = #{userTagregname},
+            </if>
+            <if test="userReferrer != null and userReferrer != ''">
+                user_referrer = #{userReferrer},
+            </if>
+            <if test="userLockstatus != null and userLockstatus != ''">
+                user_lockStatus = #{userLockstatus},
+            </if>
+            <if test="userRegtime != null">
+                user_regTime = #{userRegtime},
+            </if>
+            <if test="userLogintime != null">
+                user_loginTime = #{userLogintime},
+            </if>
+            <if test="userResource != null and userResource != ''">
+                user_resource = #{userResource},
+            </if>
+            <if test="userRole != null and userRole != ''">
+                user_role = #{userRole},
+            </if>
+            <if test="userUsertype != null and userUsertype != ''">
+                user_userType = #{userUsertype},
+            </if>
+        </set>
+        where user_id = #{userId}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete
+        from internetfinance.tb_user
+        where user_id = #{userId}
+    </delete>
+
+</mapper>
+

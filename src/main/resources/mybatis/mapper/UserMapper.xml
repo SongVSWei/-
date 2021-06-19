@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gxa.internetfinance.mapper.UserMapper">
+
+    <resultMap id="userMap" type="com.gxa.internetfinance.pojo.vo.UserVo">
+
+        <id column="user_id" property="id" javaType="Integer" jdbcType="INTEGER"/>
+        <result column="user_name" property="name" javaType="string" jdbcType="VARCHAR"/>
+        <result column="user_phone" property="phone" javaType="string" jdbcType="VARCHAR"/>
+        <result column="user_pwd" property="pwd" javaType="string" jdbcType="VARCHAR"/>
+        <result column="user_idStatus" property="idStatus" javaType="string" jdbcType="VARCHAR"/>
+        <result column="user_idNum" property="idNum" javaType="string" jdbcType="VARCHAR"/>
+        <result column="user_gender" property="gender" javaType="string" jdbcType="CHAR"/>
+        <result column="user_email" property="email" javaType="string" jdbcType="VARCHAR"/>
+        <result column="user_legalPersonName" property="legalPersonName" javaType="string" jdbcType="VARCHAR"/>
+        <result column="user_tagRegName" property="tagRegName" javaType="string" jdbcType="VARCHAR"/>
+        <result column="user_referrer" property="referrer" javaType="string" jdbcType="VARCHAR"/>
+        <result column="user_lockStatus" property="lockStatus" javaType="string" jdbcType="VARCHAR"/>
+        <result column="user_regTime" property="regTime" javaType="java.util.Date" jdbcType="TIMESTAMP"/>
+        <result column="user_loginTime" property="loginTime" javaType="java.util.Date" jdbcType="TIMESTAMP"/>
+        <result column="user_resource" property="resource" javaType="string" jdbcType="VARCHAR"/>
+        <result column="user_role" property="role" javaType="string" jdbcType="VARCHAR"/>
+        <result column="user_userType" property="userType" javaType="string" jdbcType="VARCHAR"/>
+        <result column="user_remarks" property="remarks" javaType="string" jdbcType="VARCHAR"/>
+
+        <collection property="userdetailList"
+                    ofType="com.gxa.internetfinance.pojo.po.Userdetail"
+                    column="user_phone" select="com.gxa.internetfinance.mapper.UserDetailMapper.selectByPhone">
+
+        </collection>
+
+
+    </resultMap>
+
+    <!--个人用户添加方法-->
+    <insert id="personalinsert">
+        insert into tb_user(user_name,user_phone,user_pwd,user_idNum,user_gender,user_email,user_idStatus,user_userType)
+        value (#{name},#{phone},#{pwd},#{idNum},#{gender},#{email},#{idStatus},#{userType})
+
+    </insert>
+
+    <!--企业用户添加方法-->
+    <insert id="companyinsert">
+        insert into tb_user(user_name,user_phone,user_pwd,user_legalPersonName,user_tagRegName,user_email,user_idStatus,user_userType)
+            value (#{name},#{phone},#{pwd},#{legalPersonName},#{tagRegName},#{email},#{idStatus},#{userType})
+
+    </insert>
+
+    <select id="selectComprehensive" parameterType="map"  resultMap="userMap">
+        select *
+        FROM tb_user
+        <where>
+            <if test="name!=null and name != '' ">
+                and user_name like concat('%', #{name}, '%')
+            </if>
+            <if test="phone!=null and phone != '' ">
+                and user_phone like concat('%', #{phone}, '%')
+            </if>
+            <if test="lockStatus!=null and lockStatus != '' ">
+                and user_lockStatus = #{lockStatus}
+            </if>
+        </where>
+        LIMIT #{page},#{size}
+    </select>
+
+    <select id="selectWhole" parameterType="map"  resultMap="userMap">
+        select *
+        FROM tb_user
+        <where>
+            user_role = "投资用户"
+            <if test="name!=null and name != '' ">
+                and user_name like concat('%', #{name}, '%')
+            </if>
+            <if test="phone!=null and phone != '' ">
+                and user_phone like concat('%', #{phone}, '%')
+            </if>
+            <if test="idStatus!=null and idStatus != '' ">
+                and user_idStatus = #{idStatus}
+            </if>
+            <if test="lockStatus!=null and lockStatus != '' ">
+                and user_lockStatus = #{lockStatus}
+            </if>
+            <if test="resource!=null and resource != '' ">
+                and user_resource = #{resource}
+            </if>
+
+        </where>
+        LIMIT #{page},#{size}
+    </select>
+
+    <select id="selectTotalCounts" resultType="int">
+        select count(*)
+        FROM tb_user
+        <where>
+            <if test="name!=null and name != '' ">
+                and user_name like concat('%', #{name}, '%')
+            </if>
+            <if test="phone!=null and phone != '' ">
+                and user_phone like concat('%', #{phone}, '%')
+            </if>
+            <if test="lockStatus!=null and lockStatus != '' ">
+                and user_lockStatus = #{lockStatus}
+            </if>
+        </where>
+
+    </select>
+
+    <select id="selectWholeCounts" resultType="int">
+        select count(*)
+        FROM tb_user
+        <where>
+            user_role = "投资用户"
+            <if test="name!=null and name != '' ">
+                and user_name like concat('%', #{name}, '%')
+            </if>
+            <if test="phone!=null and phone != '' ">
+                and user_phone like concat('%', #{phone}, '%')
+            </if>
+            <if test="idStatus!=null and idStatus != '' ">
+                and user_idStatus = #{idStatus}
+            </if>
+            <if test="lockStatus!=null and lockStatus != '' ">
+                and user_lockStatus = #{lockStatus}
+            </if>
+            <if test="resource!=null and resource != '' ">
+                and user_resource = #{resource}
+            </if>
+        </where>
+    </select>
+
+    <update id="updateInvestUserById" parameterType="object">
+        update tb_user
+        <set>
+            <if test="name!=null and name!=''">
+                user_name=#{name}
+            </if>
+            <if test="phone!=null and phone!=''">
+                ,user_phone=#{phone}
+            </if>
+            <if test="idNum!=null and idNum!=''">
+                ,user_idNum=#{idNum}
+            </if>
+            <if test="lockStatus!=null and lockStatus!=''">
+                ,user_lockStatus=#{lockStatus}
+            </if>
+            <if test="remarks!=null and remarks!=''">
+                ,user_remarks=#{remarks}
+            </if>
+        </set>
+        Where user_id =#{id}
+    </update>
+
+    <update id="updatePersonalLendingUserById" parameterType="object">
+        update tb_user
+        <set>
+            <if test="name!=null and name!=''">
+                user_name=#{name}
+            </if>
+            <if test="phone!=null and phone!=''">
+                ,user_phone=#{phone}
+            </if>
+            <if test="idNum!=null and idNum!=''">
+                ,user_idNum=#{idNum}
+            </if>
+            <if test="lockStatus!=null and lockStatus!=''">
+                ,user_lockStatus=#{lockStatus}
+            </if>
+            <if test="remarks!=null and remarks!=''">
+                ,user_remarks=#{remarks}
+            </if>
+            <if test="gender!=null and gender!=''">
+                ,user_gender=#{gender}
+            </if>
+            <if test="email!=null and email!=''">
+                ,user_email = #{email}
+            </if>
+        </set>
+        Where user_id =#{id}
+    </update>
+
+    <update id="updateCompanylLendingUserById" parameterType="object">
+        update tb_user
+        <set>
+            <if test="name!=null and name!=''">
+                user_name=#{name}
+            </if>
+            <if test="phone!=null and phone!=''">
+                ,user_phone=#{phone}
+            </if>
+
+            <if test="lockStatus!=null and lockStatus!=''">
+                ,user_lockStatus=#{lockStatus}
+            </if>
+            <if test="remarks!=null and remarks!=''">
+                ,user_remarks=#{remarks}
+            </if>
+
+            <if test="email!=null and email!=''">
+                ,user_email=#{email}
+            </if>
+
+            <if test="legalPersonName!=null and legalPersonName!=''">
+                ,user_legalPersonName=#{legalPersonName}
+            </if>
+            <if test="tagRegName!=null and tagRegName!=''">
+                ,user_tagRegName=#{tagRegName}
+            </if>
+        </set>
+        Where user_id =#{id}
+    </update>
+
+
+
+
+
+
+    <select id="selectByPhone" resultMap="userMap">
+        select * from tb_user where user_phone = #{userPhone}
+    </select>
+
+    <select id="selectById" resultMap="userMap">
+        select * from tb_user where user_id = #{id}
+    </select>
+
+
+    <select id="selectIdByPhone" resultMap="userMap">
+        SELECT user_id from tb_user where user_phone = #{userPhone}
+    </select>
+
+    <select id="selectIdByIdNum" resultMap="userMap">
+        SELECT user_id from tb_user where user_idNum = #{idNum}
+    </select>
+
+    <select id="selectIdByTag" resultMap="userMap">
+        SELECT user_id from tb_user where user_tagRegName = #{tagRegName}
+    </select>
+
+    <select id="selectPersonalDetailsById" resultMap="userMap">
+        SELECT user_id,user_name,user_phone,user_pwd,user_idNum,user_gender,user_email,user_idStatus,user_userType,user_lockStatus,user_remarks
+        from tb_user where user_id = #{id}
+    </select>
+
+    <select id="selectCompanyDetailsById" resultMap="userMap">
+        SELECT user_id,user_name,user_phone,user_pwd,user_legalPersonName,user_tagRegName,user_email,user_idStatus,user_userType,user_lockStatus,user_remarks
+        from tb_user where user_id = #{id}
+    </select>
+
+</mapper>

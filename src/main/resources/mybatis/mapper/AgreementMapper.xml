@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gxa.internetfinance.mapper.AgreementMapper">
+    <resultMap id="AgreementResultMap" type="com.gxa.internetfinance.pojo.po.Agreement">
+        <id column="agreement_id" jdbcType="INTEGER" property="id"/>
+        <result column="agreement_name" jdbcType="VARCHAR" property="name"/>
+        <result column="agreement_type" jdbcType="VARCHAR" property="type"/>
+        <result column="agreement_inUse" jdbcType="VARCHAR" property="inUse"/>
+        <result column="agreement_context" jdbcType="VARCHAR" property="context"/>
+
+    </resultMap>
+
+    <update id="UpdateByEdit" parameterType="com.gxa.internetfinance.pojo.po.Agreement">
+        update tb_agreement
+        <set>
+            <trim suffixOverrides=",">
+            <if test="name!=null and name != '' ">
+                agreement_name = #{name},
+            </if>
+            <if test="type!=null and type != '' ">
+                agreement_type= #{type},
+            </if>
+            <if test="inUse==true or inUse == false ">
+                agreement_inUse = #{inUse},
+            </if>
+            <if test="context!=null and context!=''">
+                agreement_context=#{context},
+            </if>
+            </trim>
+
+        </set>
+        where agreement_id=#{id}
+    </update>
+    <insert id="insertByAgreement" parameterType="com.gxa.internetfinance.pojo.po.Agreement">
+        insert into tb_agreement
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="name!=null and name!=''">
+                agreement_name,
+            </if>
+            <if test="type!=null and type!=''">
+                agreement_type,
+            </if>
+            <if test="inUse==true or inUse==false">
+                agreement_inUse,
+            </if>
+            <if test="context!=null and context!=''">
+                agreement_context,
+            </if>
+        </trim>
+            <trim prefix="values(" suffix=")" suffixOverrides=",">
+                <if test="name!=null and name!=''">
+                    #{name},
+                </if>
+            <if test="type!=null and type!=''">
+                #{type},
+            </if>
+                <if test="inUse==true or inUse==false">
+                #{inUse},
+            </if>
+            <if test="context!=null and context!=''">
+                #{context},
+            </if>
+            </trim>
+
+    </insert>
+
+    <select id="selectAll" parameterType="int" resultMap="AgreementResultMap">
+        select * from tb_agreement
+        limit #{param1},#{param2}
+    </select>
+
+    <select id="selectCount" parameterType="int" resultType="int">
+        select count(*) from tb_agreement
+
+    </select>
+
+    <update id="UpdateByInUse" parameterType="int">
+        update tb_agreement
+<!--        <set>-->
+<!--            <if test="inUse!=null and inUse!=''">-->
+<!--               agreement_inUse=#{arg1}-->
+<!--            </if>-->
+<!--        </set>-->
+         set
+        agreement_inUse=#{arg1}
+        where agreement_id=#{arg0}
+    </update>
+
+</mapper>

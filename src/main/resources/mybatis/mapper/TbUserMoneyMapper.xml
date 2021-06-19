@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gxa.internetfinance.mapper.TbUserMoneyMapper">
+  <resultMap id="BaseResultMap" type="com.gxa.internetfinance.pojo.po.TbUserMoney">
+    <id column="tb_user_money_id" jdbcType="INTEGER" property="tbUserMoneyId" />
+    <result column="tb_user_money_phone" jdbcType="VARCHAR" property="tbUserMoneyPhone" />
+    <result column="tb_money_total" jdbcType="DECIMAL" property="tbMoneyTotal" />
+    <result column="tb_user_money_account" jdbcType="DECIMAL" property="tbUserMoneyAccount" />
+    <result column="tb_user_money_usable" jdbcType="DECIMAL" property="tbUserMoneyUsable" />
+    <result column="tb_user_money_frozen" jdbcType="DECIMAL" property="tbUserMoneyFrozen" />
+    <result column="tb_user_money_colinterest" jdbcType="DECIMAL" property="tbUserMoneyColinterest" />
+    <result column="tb_user_money_amount_collect" jdbcType="DECIMAL" property="tbUserMoneyAmountCollect" />
+    <result column="tb_user_money_total_invest" jdbcType="DECIMAL" property="tbUserMoneyTotalInvest" />
+    <result column="tb_user_money_total_income" jdbcType="DECIMAL" property="tbUserMoneyTotalIncome" />
+    <result column="tb_user_money_total_borrow" jdbcType="DECIMAL" property="tbUserMoneyTotalBorrow" />
+    <result column="tb_user_money_total_repay" jdbcType="DECIMAL" property="tbUserMoneyTotalRepay" />
+    <result column="borrow_balance_repay" jdbcType="DECIMAL" property="borrowBalanceRepay" />
+  </resultMap>
+
+  <resultMap id="UserMoneyMap" type="com.gxa.internetfinance.pojo.vo.UserMoneyVo">
+    <id column="tb_user_money_id" jdbcType="INTEGER" property="tbUserMoneyId" />
+    <result column="tb_user_id" jdbcType="INTEGER" property="tbUserId" />
+    <result column="user_name" jdbcType="VARCHAR" property="userName" />
+    <result column="tb_user_money_phone" jdbcType="VARCHAR" property="tbUserMoneyPhone" />
+
+    <result column="tb_money_total" jdbcType="DECIMAL" property="tbMoneyTotal" />
+    <result column="tb_user_money_usable" jdbcType="DECIMAL" property="tbUserMoneyUsable" />
+    <result column="tb_user_money_frozen" jdbcType="DECIMAL" property="tbUserMoneyFrozen" />
+    <result column="tb_user_money_amount_collect" jdbcType="DECIMAL" property="tbUserMoneyAmountCollect" />
+    <result column="tb_user_money_total_invest" jdbcType="DECIMAL" property="tbUserMoneyTotalInvest" />
+    <result column="tb_user_money_total_income" jdbcType="DECIMAL" property="tbUserMoneyTotalIncome" />
+    <result column="tb_user_money_total_borrow" jdbcType="DECIMAL" property="tbUserMoneyTotalBorrow" />
+    <result column="tb_user_money_total_repay" jdbcType="DECIMAL" property="tbUserMoneyTotalRepay" />
+    <result column="borrow_balance_repay" jdbcType="DECIMAL" property="borrowBalanceRepay" />
+  </resultMap>
+
+  <sql id="Base_Column_List">
+    tb_user_money_id, tb_user_id, tb_money_total, tb_user_money_account, tb_user_money_usable, 
+    tb_user_money_frozen, tb_user_money_colinterest, tb_user_money_amount_collect, tb_user_money_total_invest, 
+    tb_user_money_total_income, tb_user_money_total_borrow, tb_user_money_total_repay, 
+    borrow_balance_repay
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from tb_user_money
+    where tb_user_money_id = #{tbUserMoneyId,jdbcType=INTEGER}
+  </select>
+
+  <!--条件查询-->
+  <select id="findByParam" resultMap="UserMoneyMap">
+    select tb_user_money_id, tb_user_money_phone, tb_money_total, tb_user_money_account, tb_user_money_usable,
+           tb_user_money_frozen, tb_user_money_colinterest, tb_user_money_amount_collect, tb_user_money_total_invest,
+           tb_user_money_total_income, tb_user_money_total_borrow, tb_user_money_total_repay,
+           borrow_balance_repay,mon.tb_user_money_phone,usr.user_name
+    from tb_user_money mon
+    left join tb_user usr on usr.user_phone = mon.tb_user_money_phone
+    <where>
+      <if test="param.name != null and param.name != ''">
+        usr.user_name like concat('%',"#{param.name}",'%')
+      </if>
+      <if test="param.phone != null and param.phone != ''">
+        and mon.tb_user_money_phone like concat('%',#{param.phone},'%')
+      </if>
+      <if test="param.role != null and param.role != ''">
+        and usr.user_role like concat('%',#{param.role},'%')
+      </if>
+    </where>
+
+
+  </select>
+
+  <!--通过电话查询一条数据-->
+  <select id="selectByPhone" resultType="com.gxa.internetfinance.pojo.po.TbUserMoney">
+    select *
+    from tb_user_money
+    where tb_user_money_phone=#{phone}
+  </select>
+
+
+
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from tb_user_money
+    where tb_user_money_id = #{tbUserMoneyId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" keyColumn="tb_user_money_id" keyProperty="tbUserMoneyId" parameterType="com.gxa.internetfinance.pojo.po.TbUserMoney" useGeneratedKeys="true">
+    insert into tb_user_money (tb_user_money_phone, tb_money_total, tb_user_money_account,
+      tb_user_money_usable, tb_user_money_frozen, tb_user_money_colinterest, 
+      tb_user_money_amount_collect, tb_user_money_total_invest, 
+      tb_user_money_total_income, tb_user_money_total_borrow, 
+      tb_user_money_total_repay, borrow_balance_repay
+      )
+    values (#{tbUserId,jdbcType=INTEGER}, #{tbMoneyTotal,jdbcType=DECIMAL}, #{tbUserMoneyAccount,jdbcType=DECIMAL}, 
+      #{tbUserMoneyUsable,jdbcType=DECIMAL}, #{tbUserMoneyFrozen,jdbcType=DECIMAL}, #{tbUserMoneyColinterest,jdbcType=DECIMAL}, 
+      #{tbUserMoneyAmountCollect,jdbcType=DECIMAL}, #{tbUserMoneyTotalInvest,jdbcType=DECIMAL}, 
+      #{tbUserMoneyTotalIncome,jdbcType=DECIMAL}, #{tbUserMoneyTotalBorrow,jdbcType=DECIMAL}, 
+      #{tbUserMoneyTotalRepay,jdbcType=DECIMAL}, #{borrowBalanceRepay,jdbcType=DECIMAL}
+      )
+  </insert>
+  <insert id="insertSelective" keyColumn="tb_user_money_id" keyProperty="tbUserMoneyId" parameterType="com.gxa.internetfinance.pojo.po.TbUserMoney" useGeneratedKeys="true">
+    insert into tb_user_money
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="tbUserId != null">
+        tb_user_id,
+      </if>
+      <if test="tbMoneyTotal != null">
+        tb_money_total,
+      </if>
+      <if test="tbUserMoneyAccount != null">
+        tb_user_money_account,
+      </if>
+      <if test="tbUserMoneyUsable != null">
+        tb_user_money_usable,
+      </if>
+      <if test="tbUserMoneyFrozen != null">
+        tb_user_money_frozen,
+      </if>
+      <if test="tbUserMoneyColinterest != null">
+        tb_user_money_colinterest,
+      </if>
+      <if test="tbUserMoneyAmountCollect != null">
+        tb_user_money_amount_collect,
+      </if>
+      <if test="tbUserMoneyTotalInvest != null">
+        tb_user_money_total_invest,
+      </if>
+      <if test="tbUserMoneyTotalIncome != null">
+        tb_user_money_total_income,
+      </if>
+      <if test="tbUserMoneyTotalBorrow != null">
+        tb_user_money_total_borrow,
+      </if>
+      <if test="tbUserMoneyTotalRepay != null">
+        tb_user_money_total_repay,
+      </if>
+      <if test="borrowBalanceRepay != null">
+        borrow_balance_repay,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="tbUserId != null">
+        #{tbUserId,jdbcType=INTEGER},
+      </if>
+      <if test="tbMoneyTotal != null">
+        #{tbMoneyTotal,jdbcType=DECIMAL},
+      </if>
+      <if test="tbUserMoneyAccount != null">
+        #{tbUserMoneyAccount,jdbcType=DECIMAL},
+      </if>
+      <if test="tbUserMoneyUsable != null">
+        #{tbUserMoneyUsable,jdbcType=DECIMAL},
+      </if>
+      <if test="tbUserMoneyFrozen != null">
+        #{tbUserMoneyFrozen,jdbcType=DECIMAL},
+      </if>
+      <if test="tbUserMoneyColinterest != null">
+        #{tbUserMoneyColinterest,jdbcType=DECIMAL},
+      </if>
+      <if test="tbUserMoneyAmountCollect != null">
+        #{tbUserMoneyAmountCollect,jdbcType=DECIMAL},
+      </if>
+      <if test="tbUserMoneyTotalInvest != null">
+        #{tbUserMoneyTotalInvest,jdbcType=DECIMAL},
+      </if>
+      <if test="tbUserMoneyTotalIncome != null">
+        #{tbUserMoneyTotalIncome,jdbcType=DECIMAL},
+      </if>
+      <if test="tbUserMoneyTotalBorrow != null">
+        #{tbUserMoneyTotalBorrow,jdbcType=DECIMAL},
+      </if>
+      <if test="tbUserMoneyTotalRepay != null">
+        #{tbUserMoneyTotalRepay,jdbcType=DECIMAL},
+      </if>
+      <if test="borrowBalanceRepay != null">
+        #{borrowBalanceRepay,jdbcType=DECIMAL},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.gxa.internetfinance.pojo.po.TbUserMoney">
+    update tb_user_money
+    <set>
+      <if test="tbUserId != null">
+        tb_user_id = #{tbUserId,jdbcType=INTEGER},
+      </if>
+      <if test="tbMoneyTotal != null">
+        tb_money_total = #{tbMoneyTotal,jdbcType=DECIMAL},
+      </if>
+      <if test="tbUserMoneyAccount != null">
+        tb_user_money_account = #{tbUserMoneyAccount,jdbcType=DECIMAL},
+      </if>
+      <if test="tbUserMoneyUsable != null">
+        tb_user_money_usable = #{tbUserMoneyUsable,jdbcType=DECIMAL},
+      </if>
+      <if test="tbUserMoneyFrozen != null">
+        tb_user_money_frozen = #{tbUserMoneyFrozen,jdbcType=DECIMAL},
+      </if>
+      <if test="tbUserMoneyColinterest != null">
+        tb_user_money_colinterest = #{tbUserMoneyColinterest,jdbcType=DECIMAL},
+      </if>
+      <if test="tbUserMoneyAmountCollect != null">
+        tb_user_money_amount_collect = #{tbUserMoneyAmountCollect,jdbcType=DECIMAL},
+      </if>
+      <if test="tbUserMoneyTotalInvest != null">
+        tb_user_money_total_invest = #{tbUserMoneyTotalInvest,jdbcType=DECIMAL},
+      </if>
+      <if test="tbUserMoneyTotalIncome != null">
+        tb_user_money_total_income = #{tbUserMoneyTotalIncome,jdbcType=DECIMAL},
+      </if>
+      <if test="tbUserMoneyTotalBorrow != null">
+        tb_user_money_total_borrow = #{tbUserMoneyTotalBorrow,jdbcType=DECIMAL},
+      </if>
+      <if test="tbUserMoneyTotalRepay != null">
+        tb_user_money_total_repay = #{tbUserMoneyTotalRepay,jdbcType=DECIMAL},
+      </if>
+      <if test="borrowBalanceRepay != null">
+        borrow_balance_repay = #{borrowBalanceRepay,jdbcType=DECIMAL},
+      </if>
+    </set>
+    where tb_user_money_id = #{tbUserMoneyId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.gxa.internetfinance.pojo.po.TbUserMoney">
+    update tb_user_money
+    set tb_user_money_phone = #{tbUserMoneyPhone,jdbcType=INTEGER},
+      tb_money_total = #{tbMoneyTotal,jdbcType=DECIMAL},
+      tb_user_money_account = #{tbUserMoneyAccount,jdbcType=DECIMAL},
+      tb_user_money_usable = #{tbUserMoneyUsable,jdbcType=DECIMAL},
+      tb_user_money_frozen = #{tbUserMoneyFrozen,jdbcType=DECIMAL},
+      tb_user_money_colinterest = #{tbUserMoneyColinterest,jdbcType=DECIMAL},
+      tb_user_money_amount_collect = #{tbUserMoneyAmountCollect,jdbcType=DECIMAL},
+      tb_user_money_total_invest = #{tbUserMoneyTotalInvest,jdbcType=DECIMAL},
+      tb_user_money_total_income = #{tbUserMoneyTotalIncome,jdbcType=DECIMAL},
+      tb_user_money_total_borrow = #{tbUserMoneyTotalBorrow,jdbcType=DECIMAL},
+      tb_user_money_total_repay = #{tbUserMoneyTotalRepay,jdbcType=DECIMAL},
+      borrow_balance_repay = #{borrowBalanceRepay,jdbcType=DECIMAL}
+    where tb_user_money_id = #{tbUserMoneyId,jdbcType=INTEGER}
+  </update>
+
+  <!--充值和提现时的资金变动-->
+  <update id="updateChange">
+    update tb_user_money
+    set tb_money_total = #{tbUserMoney.tbMoneyTotal},
+        tb_user_money_account = #{tbUserMoney.tbUserMoneyAccount},
+        tb_user_money_usable = #{tbUserMoney.tbUserMoneyUsable}
+    where tb_user_money_phone = #{tbUserMoney.tbUserMoneyPhone}
+  </update>
+</mapper>

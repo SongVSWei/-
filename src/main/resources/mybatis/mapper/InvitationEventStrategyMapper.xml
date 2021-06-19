@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gxa.internetfinance.mapper.InvitationEventStrategyMapper">
+    <resultMap id="InvitationEventStrategyMap" type="com.gxa.internetfinance.pojo.po.InvitationEventStrategy">
+        <id column="ies_id" property="id" javaType="Integer" jdbcType="INTEGER"/>
+        <result column="ies_triggerEvent" property="triggerEvent" javaType="String"></result>
+        <result column="ies_bonusObject" property="bonusObject" javaType="String"/>
+        <result column="ies_bonus" property="bonus" javaType="String"></result>
+        <result column="ies_bonusType" property="bonusType" javaType="String"></result>
+        <result column="ies_number" property="number" javaType="INTEGER"></result>
+        <result column="ies_status" property="status" javaType="String"></result>
+        <result column="ies_updateTime" property="updateTime" javaType="java.util.Date"></result>
+    </resultMap>
+    <update id="update" parameterType="InvitationEventStrategy">
+        update tb_invitationeventstrategy
+        <set>
+            <if test="triggerEvent!=null and triggerEvent !=''">
+                ,ies_triggerEvent = #{triggerEvent}
+            </if>
+            <if test="bonus!=null and bonus !=''">
+                ,ies_bonus = #{bonus}
+            </if>
+            <if test="bonusType!=null and bonusType !=''">
+                ,ies_bonusType = #{bonusType}
+            </if>
+            <if test="status!=null">
+                ,ies_status = #{status}
+            </if>
+            <if test="updateTime!=null">
+                ,ies_updateTime = #{updateTime}
+            </if>
+        </set>
+        where ies_id=#{id}
+    </update>
+    <select id="selectBypage" resultMap="InvitationEventStrategyMap">
+        select * from  tb_invitationeventstrategy  limit #{current},#{limit}
+    </select>
+</mapper>

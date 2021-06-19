@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gxa.internetfinance.mapper.ChechkInStrategyMapper">
+    <resultMap id="ChechkInStrategyMap" type="com.gxa.internetfinance.pojo.po.ChechkInStrategy">
+        <id column="cis_id" property="id" javaType="Integer" jdbcType="INTEGER"/>
+        <result column="cis_triggerEvent" property="triggerEvent" javaType="String"></result>
+        <result column="cis_bonus" property="bonus" javaType="String"/>
+        <result column="cis_bonusType" property="bonusType" javaType="String"></result>
+        <result column="cis_number" property="number" javaType="Integer"></result>
+        <result column="cis_status" property="status" javaType="String"></result>
+        <result column="cis_updateTime" property="updateTime" javaType="java.util.Date"></result>
+    </resultMap>
+    <update id="update" parameterType="ChechkInStrategy">
+        update tb_checkinstrategy
+        <set>
+            <if test="triggerEvent!=null and triggerEvent !=''">
+                ,cis_triggerEvent = #{triggerEvent}
+            </if>
+            <if test="bonus!=null and bonus !=''">
+                ,cis_bonus = #{bonus}
+            </if>
+            <if test="bonusType!=null and bonusType !=''">
+                ,cis_bonusType = #{bonusType}
+            </if>
+            <if test="status!=null">
+                ,cis_status = #{status}
+            </if>
+            <if test="updateTime!=null">
+                ,cis_updateTime = #{updateTime}
+            </if>
+        </set>
+        where cis_id=#{id}
+    </update>
+    <select id="selectBypage" resultMap="ChechkInStrategyMap">
+        select * from  tb_checkinstrategy  limit #{current},#{limit}
+    </select>
+</mapper>

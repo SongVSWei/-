@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gxa.internetfinance.mapper.ExperirenceMapper">
+    <resultMap id="ExperirenceMap" type="com.gxa.internetfinance.pojo.po.Experience">
+        <id column="experirence_id" property="id" javaType="Integer" jdbcType="INTEGER"/>
+        <result column="experience_amount" property="amount" javaType="Integer"></result>
+        <result column="experience_effectiveDays" property="effectiveDays" javaType="Integer"/>
+        <result column="experience_dailyDistributionLimit" property="dailyDistributionLimit" javaType="Integer"></result>
+        <result column="experience_goldReleaseSwitch" property="goldReleaseSwitch" javaType="String"></result>
+        <result column="experience_entitle" property="entitle" javaType="String"></result>
+        <result column="experience_AnnualInterestRate" property="AnnualInterestRate" javaType="Double"></result>
+        <result column="experience_ProjectDuration" property="ProjectDuration" javaType="Integer"></result>
+        <result column="experience_ProjectIntroduction" property="ProjectIntroduction" javaType="String"></result>
+    </resultMap>
+    <insert id="insert" parameterType="com.gxa.internetfinance.pojo.po.Experience">
+        insert into tb_experience(experience_amount, experience_effectiveDays, experience_dailyDistributionLimit,
+                    experience_goldReleaseSwitch, experience_entitle,
+                    experience_AnnualInterestRate,experience_ProjectDuration
+                   ,experience_ProjectIntroduction )
+        values (#{amount},#{effectiveDays},#{dailyDistributionLimit},
+                #{goldReleaseSwitch},#{entitle},#{AnnualInterestRate},
+                #{ProjectDuration},#{ProjectIntroduction})
+    </insert>
+    <select id="selectById" parameterType="Integer" resultMap="ExperirenceMap">
+        select * from tb_experience where experience_id=#{id}
+    </select>
+
+    <select id="pageCondition" resultType="com.gxa.internetfinance.pojo.vo.ExperienceVO">
+        select
+        user_name,
+        experience_amount,
+        experience_phone,
+        experience_source,
+        experience_collectTime,
+        experience_useExpire,
+        experience_useTime,
+        experience_entitle,
+        experience_amount,
+        experience_AnnualInterestRate,
+        tbbi.status,
+        from tb_experience tbbi left join
+        tb_user_wen tu on tbbi.experience_phone=tu.phone
+        <where>
+            <if test="condition!=null">
+                tbbi.status=#{condition}
+            </if>
+            <if test="name!=null">
+                <bind name="name" value="'%'+name+'%'"/>
+                and tbbi.name like #{name}
+            </if>
+            <if test="userName!=null">
+                <bind name="userName" value="'%'+userName+'%'"/>
+                and tu.name like #{userName}
+            </if>
+            <if test="userPhone!=null">
+                <bind name="userPhone" value="'%'+userPhone+'%'"/>
+                and tbbi.user_phone like #{userPhone}
+            </if>
+            <if test="status!=null">
+                <bind name="status" value="'%'+status+'%'"/>
+                and tbbi.status like #{status}
+            </if>
+        </where>
+        order by tbbi.gmt_created desc
+        limit #{current},#{limit}
+    </select>
+
+</mapper>

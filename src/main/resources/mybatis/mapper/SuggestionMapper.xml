@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gxa.internetfinance.mapper.SuggestionMapper">
+    <resultMap id="SuggestionResultMap" type="com.gxa.internetfinance.pojo.po.Suggestion">
+        <id column="suggestion_id" jdbcType="INTEGER" property="id"/>
+        <result column="suggestion_PhoneModel" jdbcType="VARCHAR" property="phoneModel"/>
+        <result column="suggestion_desc" jdbcType="VARCHAR" property="desc"/>
+        <result column="suggestion_expireTime" jdbcType="DATE" property="expireTime"/>
+        <result column="suggestion_inHandle" jdbcType="BIT" property="inHandle"/>
+        <result column="suggestion_ideaSourse" jdbcType="VARCHAR" property="ideaSourse"/>
+        <result column="suggestion_phone" jdbcType="VARCHAR" property="phone"/>
+        <result column="suggestion_response" jdbcType="VARCHAR" property="response"/>
+
+    </resultMap>
+
+    <select id="selectByPrimaryKey" parameterType="map" resultMap="SuggestionResultMap">
+        select *
+        from tb_suggestion
+        <where>
+            <if test="desc!=null and desc != '' ">
+                and suggestion_desc  like concat('%', #{desc}, '%')
+            </if>
+            <if test="inHandle!=2 ">
+                and suggestion_inHandle = #{inHandle}
+            </if>
+
+        </where>
+        limit   #{page},#{size}
+
+    </select>
+    <select id="selectCount" parameterType="map" resultType="int">
+        select count(*)
+        from tb_suggestion
+        <where>
+            <if test="desc!=null and desc != '' ">
+                and suggestion_desc  like concat('%', #{desc}, '%')
+            </if>
+            <if test="inHandle!=2 ">
+                and suggestion_inHandle = #{inHandle}
+            </if>
+
+        </where>
+
+
+    </select>
+
+    <update id="updateByInHandle" parameterType="object">
+        update tb_suggestion
+        <set>
+
+               suggestion_inHandle=1, suggestion_response=#{param2}
+        </set>
+        where suggestion_id=#{param1}
+    </update>
+
+</mapper>

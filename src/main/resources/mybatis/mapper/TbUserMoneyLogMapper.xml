@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gxa.internetfinance.mapper.TbUserMoneyLogMapper">
+  <resultMap id="BaseResultMap" type="com.gxa.internetfinance.pojo.po.TbUserMoneyLog">
+    <id column="tb_user_money_log_id" jdbcType="INTEGER" property="tbUserMoneyLogId" />
+    <result column="tb_user_money_log_name" jdbcType="VARCHAR" property="tbUserMoneyLogName" />
+    <result column="tb_user_money_log_phone" jdbcType="VARCHAR" property="tbUserMoneyLogPhone" />
+    <result column="tb_user_money_log_type" jdbcType="VARCHAR" property="tbUserMoneyLogType" />
+    <result column="tb_user_money_log_money" jdbcType="DECIMAL" property="tbUserMoneyLogMoney" />
+    <result column="tb_user_money_log_before_money" jdbcType="DECIMAL" property="tbUserMoneyLogBeforeMoney" />
+    <result column="tb_user_money_log_after_money" jdbcType="DECIMAL" property="tbUserMoneyLogAfterMoney" />
+    <result column="tb_user_money_log_before_freeze" jdbcType="DECIMAL" property="tbUserMoneyLogBeforeFreeze" />
+    <result column="tb_user_money_log_after_freeze" jdbcType="DECIMAL" property="tbUserMoneyLogAfterFreeze" />
+    <result column="tb_user_money_log_desc" jdbcType="VARCHAR" property="tbUserMoneyLogDesc" />
+    <result column="tb_user_money_log_action_time" jdbcType="TIMESTAMP" property="tbUserMoneyLogActionTime" />
+  </resultMap>
+
+
+
+
+  <sql id="Base_Column_List">
+    tb_user_money_log_id, tb_user_money_log_name, tb_user_money_log_phone, tb_user_money_log_type, 
+    tb_user_money_log_money, tb_user_money_log_before_money, tb_user_money_log_after_money, 
+    tb_user_money_log_before_freeze, tb_user_money_log_after_freeze, tb_user_money_log_desc, 
+    tb_user_money_log_action_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from tb_user_money_log
+    where tb_user_money_log_id = #{tbUserMoneyLogId,jdbcType=INTEGER}
+  </select>
+
+  <!--通过条件参数查询列表-->
+  <select id="findByParam" resultType="com.gxa.internetfinance.pojo.po.TbUserMoneyLog">
+    select *
+    from tb_user_money_log
+    <where>
+      <if test="param.name != null and param.name != ''">
+        tb_user_money_log_name like concat('%',#{param.name},'%')
+      </if>
+      <if test="param.phone != null and param.phone != ''">
+        and tb_user_money_log_phone like concat('%',#{param.phone},'%')
+      </if>
+      <if test="param.type != null and param.type != ''">
+        and tb_user_money_log_type like concat('%',#{param.type},'%')
+      </if>
+    </where>
+    order by tb_user_money_log_id desc
+  </select>
+
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from tb_user_money_log
+    where tb_user_money_log_id = #{tbUserMoneyLogId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" keyColumn="tb_user_money_log_id" keyProperty="tbUserMoneyLogId" parameterType="com.gxa.internetfinance.pojo.po.TbUserMoneyLog" useGeneratedKeys="true">
+    insert into tb_user_money_log (tb_user_money_log_name, tb_user_money_log_phone, 
+      tb_user_money_log_type, tb_user_money_log_money, 
+      tb_user_money_log_before_money, tb_user_money_log_after_money, 
+      tb_user_money_log_before_freeze, tb_user_money_log_after_freeze, 
+      tb_user_money_log_desc, tb_user_money_log_action_time
+      )
+    values (#{tbUserMoneyLogName,jdbcType=VARCHAR}, #{tbUserMoneyLogPhone,jdbcType=VARCHAR}, 
+      #{tbUserMoneyLogType,jdbcType=VARCHAR}, #{tbUserMoneyLogMoney,jdbcType=DECIMAL}, 
+      #{tbUserMoneyLogBeforeMoney,jdbcType=DECIMAL}, #{tbUserMoneyLogAfterMoney,jdbcType=DECIMAL}, 
+      #{tbUserMoneyLogBeforeFreeze,jdbcType=DECIMAL}, #{tbUserMoneyLogAfterFreeze,jdbcType=DECIMAL}, 
+      #{tbUserMoneyLogDesc,jdbcType=VARCHAR}, #{tbUserMoneyLogActionTime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" keyColumn="tb_user_money_log_id" keyProperty="tbUserMoneyLogId" parameterType="com.gxa.internetfinance.pojo.po.TbUserMoneyLog" useGeneratedKeys="true">
+    insert into tb_user_money_log
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="tbUserMoneyLogName != null">
+        tb_user_money_log_name,
+      </if>
+      <if test="tbUserMoneyLogPhone != null">
+        tb_user_money_log_phone,
+      </if>
+      <if test="tbUserMoneyLogType != null">
+        tb_user_money_log_type,
+      </if>
+      <if test="tbUserMoneyLogMoney != null">
+        tb_user_money_log_money,
+      </if>
+      <if test="tbUserMoneyLogBeforeMoney != null">
+        tb_user_money_log_before_money,
+      </if>
+      <if test="tbUserMoneyLogAfterMoney != null">
+        tb_user_money_log_after_money,
+      </if>
+      <if test="tbUserMoneyLogBeforeFreeze != null">
+        tb_user_money_log_before_freeze,
+      </if>
+      <if test="tbUserMoneyLogAfterFreeze != null">
+        tb_user_money_log_after_freeze,
+      </if>
+      <if test="tbUserMoneyLogDesc != null">
+        tb_user_money_log_desc,
+      </if>
+      <if test="tbUserMoneyLogActionTime != null">
+        tb_user_money_log_action_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="tbUserMoneyLogName != null">
+        #{tbUserMoneyLogName,jdbcType=VARCHAR},
+      </if>
+      <if test="tbUserMoneyLogPhone != null">
+        #{tbUserMoneyLogPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="tbUserMoneyLogType != null">
+        #{tbUserMoneyLogType,jdbcType=VARCHAR},
+      </if>
+      <if test="tbUserMoneyLogMoney != null">
+        #{tbUserMoneyLogMoney,jdbcType=DECIMAL},
+      </if>
+      <if test="tbUserMoneyLogBeforeMoney != null">
+        #{tbUserMoneyLogBeforeMoney,jdbcType=DECIMAL},
+      </if>
+      <if test="tbUserMoneyLogAfterMoney != null">
+        #{tbUserMoneyLogAfterMoney,jdbcType=DECIMAL},
+      </if>
+      <if test="tbUserMoneyLogBeforeFreeze != null">
+        #{tbUserMoneyLogBeforeFreeze,jdbcType=DECIMAL},
+      </if>
+      <if test="tbUserMoneyLogAfterFreeze != null">
+        #{tbUserMoneyLogAfterFreeze,jdbcType=DECIMAL},
+      </if>
+      <if test="tbUserMoneyLogDesc != null">
+        #{tbUserMoneyLogDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="tbUserMoneyLogActionTime != null">
+        #{tbUserMoneyLogActionTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.gxa.internetfinance.pojo.po.TbUserMoneyLog">
+    update tb_user_money_log
+    <set>
+      <if test="tbUserMoneyLogName != null">
+        tb_user_money_log_name = #{tbUserMoneyLogName,jdbcType=VARCHAR},
+      </if>
+      <if test="tbUserMoneyLogPhone != null">
+        tb_user_money_log_phone = #{tbUserMoneyLogPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="tbUserMoneyLogType != null">
+        tb_user_money_log_type = #{tbUserMoneyLogType,jdbcType=VARCHAR},
+      </if>
+      <if test="tbUserMoneyLogMoney != null">
+        tb_user_money_log_money = #{tbUserMoneyLogMoney,jdbcType=DECIMAL},
+      </if>
+      <if test="tbUserMoneyLogBeforeMoney != null">
+        tb_user_money_log_before_money = #{tbUserMoneyLogBeforeMoney,jdbcType=DECIMAL},
+      </if>
+      <if test="tbUserMoneyLogAfterMoney != null">
+        tb_user_money_log_after_money = #{tbUserMoneyLogAfterMoney,jdbcType=DECIMAL},
+      </if>
+      <if test="tbUserMoneyLogBeforeFreeze != null">
+        tb_user_money_log_before_freeze = #{tbUserMoneyLogBeforeFreeze,jdbcType=DECIMAL},
+      </if>
+      <if test="tbUserMoneyLogAfterFreeze != null">
+        tb_user_money_log_after_freeze = #{tbUserMoneyLogAfterFreeze,jdbcType=DECIMAL},
+      </if>
+      <if test="tbUserMoneyLogDesc != null">
+        tb_user_money_log_desc = #{tbUserMoneyLogDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="tbUserMoneyLogActionTime != null">
+        tb_user_money_log_action_time = #{tbUserMoneyLogActionTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where tb_user_money_log_id = #{tbUserMoneyLogId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.gxa.internetfinance.pojo.po.TbUserMoneyLog">
+    update tb_user_money_log
+    set tb_user_money_log_name = #{tbUserMoneyLogName,jdbcType=VARCHAR},
+      tb_user_money_log_phone = #{tbUserMoneyLogPhone,jdbcType=VARCHAR},
+      tb_user_money_log_type = #{tbUserMoneyLogType,jdbcType=VARCHAR},
+      tb_user_money_log_money = #{tbUserMoneyLogMoney,jdbcType=DECIMAL},
+      tb_user_money_log_before_money = #{tbUserMoneyLogBeforeMoney,jdbcType=DECIMAL},
+      tb_user_money_log_after_money = #{tbUserMoneyLogAfterMoney,jdbcType=DECIMAL},
+      tb_user_money_log_before_freeze = #{tbUserMoneyLogBeforeFreeze,jdbcType=DECIMAL},
+      tb_user_money_log_after_freeze = #{tbUserMoneyLogAfterFreeze,jdbcType=DECIMAL},
+      tb_user_money_log_desc = #{tbUserMoneyLogDesc,jdbcType=VARCHAR},
+      tb_user_money_log_action_time = #{tbUserMoneyLogActionTime,jdbcType=TIMESTAMP}
+    where tb_user_money_log_id = #{tbUserMoneyLogId,jdbcType=INTEGER}
+  </update>
+</mapper>

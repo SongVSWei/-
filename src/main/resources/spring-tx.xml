@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
+
+<!--    声明式事务管理-->
+    <bean id="tx" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+<!--        控制数据源-->
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+<!--    完全基于注解方式开发的事务配置,一般在 service 实现类上或方法上添加 @Transactional即可实现
+配置属性@Transactional（readonly=true）代表增删改会增加事务，需要手动提交，所以在增删改的方法上必须增加
+@Transactional(propagation = Propagation.REQUIRES_NEW,rollbackFor = Exception.class)-->
+    <tx:annotation-driven transaction-manager="tx"/>
+</beans>

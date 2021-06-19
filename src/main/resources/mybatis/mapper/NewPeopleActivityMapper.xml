@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gxa.internetfinance.mapper.NewPeopleActivityMapper">
+    <resultMap id="NewPeopleActivityMap" type="com.gxa.internetfinance.pojo.po.NewPeopleActivityStrategy">
+        <id column="hongbao_id" property="id" javaType="Integer" jdbcType="INTEGER"/>
+        <result column="npas_triggerEvent" property="triggerEvent" javaType="String"></result>
+        <result column="npas_bonus" property="bonus" javaType="String"/>
+        <result column="npas_bonusType" property="bonusType" javaType="String"></result>
+        <result column="npas_number" property="number" javaType="Integer"></result>
+        <result column="npas_status" property="status" javaType="String"></result>
+        <result column="npas_updateTime" property="updateTime" javaType="java.util.Date"></result>
+    </resultMap>
+    <update id="update" parameterType="NewPeopleActivityStrategy">
+        update tb_newPeopleActivityStrategy
+        <set>
+            <if test="triggerEvent!=null and triggerEvent !=''">
+                ,npas_triggerEvent = #{triggerEvent}
+            </if>
+            <if test="bonus!=null and bonus !=''">
+                ,npas_bonus = #{bonus}
+            </if>
+            <if test="bonusType!=null and bonusType !=''">
+                ,npas_bonusType = #{bonusType}
+            </if>
+            <if test="status!=null">
+                ,npas_status = #{status}
+            </if>
+            <if test="updateTime!=null">
+                ,npas_updateTime = #{updateTime}
+            </if>
+        </set>
+        where npas_id=#{id}
+    </update>
+    <select id="selectBypage" resultMap="NewPeopleActivityMap">
+        select * from  tb_newPeopleActivityStrategy  limit #{current},#{limit}
+    </select>
+</mapper>

@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gxa.internetfinance.mapper.TbTransactionMapper">
+
+    <resultMap type="com.gxa.internetfinance.pojo.po.TbTransaction" id="TbTransactionMap">
+        <result property="tbTransactionId" column="tb_transaction_id" jdbcType="INTEGER"/>
+        <result property="tbTransactionSerialNumber" column="tb_transaction_serial_number" jdbcType="VARCHAR"/>
+        <result property="tbTransactionType" column="tb_transaction_type" jdbcType="INTEGER"/>
+        <result property="tbTransactionCreateTime" column="tb_transaction_create_time" jdbcType="TIMESTAMP"/>
+        <result property="tbTransactionPublishTime" column="tb_transaction_publish_time" jdbcType="TIMESTAMP"/>
+        <result property="tbTransactionUpdateTime" column="tb_transaction_update_time" jdbcType="TIMESTAMP"/>
+        <result property="tbTransactionIsDeleted" column="tb_transaction_is_deleted" jdbcType="INTEGER"/>
+        <result property="tbTransactionIsSuccess" column="tb_transaction_is_success" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="TbTransactionMap">
+        select
+        tb_transaction_id, tb_transaction_serial_number, tb_transaction_type, tb_transaction_create_time,
+        tb_transaction_publish_time, tb_transaction_update_time, tb_transaction_is_deleted, tb_transaction_is_success
+        from internetfinance.tb_transaction
+        where tb_transaction_id = #{tbTransactionId}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="TbTransactionMap">
+        select
+        tb_transaction_id, tb_transaction_serial_number, tb_transaction_type, tb_transaction_create_time,
+        tb_transaction_publish_time, tb_transaction_update_time, tb_transaction_is_deleted, tb_transaction_is_success
+        from internetfinance.tb_transaction
+        limit #{offset}, #{limit}
+    </select>
+
+    <!--通过实体作为筛选条件查询-->
+    <select id="queryAll" resultMap="TbTransactionMap">
+        select
+        tb_transaction_id, tb_transaction_serial_number, tb_transaction_type, tb_transaction_create_time,
+        tb_transaction_publish_time, tb_transaction_update_time, tb_transaction_is_deleted, tb_transaction_is_success
+        from internetfinance.tb_transaction
+        <where>
+            <if test="tbTransactionId != null">
+                and tb_transaction_id = #{tbTransactionId}
+            </if>
+            <if test="tbTransactionSerialNumber != null and tbTransactionSerialNumber != ''">
+                and tb_transaction_serial_number = #{tbTransactionSerialNumber}
+            </if>
+            <if test="tbTransactionType != null">
+                and tb_transaction_type = #{tbTransactionType}
+            </if>
+            <if test="tbTransactionCreateTime != null">
+                and tb_transaction_create_time = #{tbTransactionCreateTime}
+            </if>
+            <if test="tbTransactionPublishTime != null">
+                and tb_transaction_publish_time = #{tbTransactionPublishTime}
+            </if>
+            <if test="tbTransactionUpdateTime != null">
+                and tb_transaction_update_time = #{tbTransactionUpdateTime}
+            </if>
+            <if test="tbTransactionIsDeleted != null">
+                and tb_transaction_is_deleted = #{tbTransactionIsDeleted}
+            </if>
+            <if test="tbTransactionIsSuccess != null">
+                and tb_transaction_is_success = #{tbTransactionIsSuccess}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="tbTransactionId" useGeneratedKeys="true">
+        insert into internetfinance.tb_transaction(tb_transaction_serial_number, tb_transaction_type,
+        tb_transaction_create_time, tb_transaction_publish_time, tb_transaction_update_time, tb_transaction_is_deleted,
+        tb_transaction_is_success)
+        values (#{tbTransactionSerialNumber}, #{tbTransactionType}, #{tbTransactionCreateTime},
+        #{tbTransactionPublishTime}, #{tbTransactionUpdateTime}, #{tbTransactionIsDeleted}, #{tbTransactionIsSuccess})
+    </insert>
+
+    <insert id="insertBatch" keyProperty="tbTransactionId" useGeneratedKeys="true">
+        insert into internetfinance.tb_transaction(tb_transaction_serial_number, tb_transaction_type,
+        tb_transaction_create_time, tb_transaction_publish_time, tb_transaction_update_time, tb_transaction_is_deleted,
+        tb_transaction_is_success)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+            (#{entity.tbTransactionSerialNumber}, #{entity.tbTransactionType}, #{entity.tbTransactionCreateTime},
+            #{entity.tbTransactionPublishTime}, #{entity.tbTransactionUpdateTime}, #{entity.tbTransactionIsDeleted},
+            #{entity.tbTransactionIsSuccess})
+        </foreach>
+    </insert>
+
+    <insert id="insertOrUpdateBatch" keyProperty="tbTransactionId" useGeneratedKeys="true">
+        insert into internetfinance.tb_transaction(tb_transaction_serial_number, tb_transaction_type,
+        tb_transaction_create_time, tb_transaction_publish_time, tb_transaction_update_time, tb_transaction_is_deleted,
+        tb_transaction_is_success)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+            (#{entity.tbTransactionSerialNumber}, #{entity.tbTransactionType}, #{entity.tbTransactionCreateTime},
+            #{entity.tbTransactionPublishTime}, #{entity.tbTransactionUpdateTime}, #{entity.tbTransactionIsDeleted},
+            #{entity.tbTransactionIsSuccess})
+        </foreach>
+        on duplicate key update
+        tb_transaction_serial_number = values(tb_transaction_serial_number) , tb_transaction_type =
+        values(tb_transaction_type) , tb_transaction_create_time = values(tb_transaction_create_time) ,
+        tb_transaction_publish_time = values(tb_transaction_publish_time) , tb_transaction_update_time =
+        values(tb_transaction_update_time) , tb_transaction_is_deleted = values(tb_transaction_is_deleted) ,
+        tb_transaction_is_success = values(tb_transaction_is_success)
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update tb_transaction
+        <set>
+            <if test="tbTransactionSerialNumber != null and tbTransactionSerialNumber != ''">
+                tb_transaction_serial_number = #{tbTransactionSerialNumber},
+            </if>
+            <if test="tbTransactionType != null">
+                tb_transaction_type = #{tbTransactionType},
+            </if>
+            <if test="tbTransactionCreateTime != null">
+                tb_transaction_create_time = #{tbTransactionCreateTime},
+            </if>
+            <if test="tbTransactionPublishTime != null">
+                tb_transaction_publish_time = #{tbTransactionPublishTime},
+            </if>
+            <if test="tbTransactionUpdateTime != null">
+                tb_transaction_update_time = #{tbTransactionUpdateTime},
+            </if>
+            <if test="tbTransactionIsDeleted != null">
+                tb_transaction_is_deleted = #{tbTransactionIsDeleted},
+            </if>
+            <if test="tbTransactionIsSuccess != null">
+                tb_transaction_is_success = #{tbTransactionIsSuccess},
+            </if>
+        </set>
+        where tb_transaction_id = #{tbTransactionId}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from internetfinance.tb_transaction where tb_transaction_id = #{tbTransactionId}
+    </delete>
+
+</mapper>
+

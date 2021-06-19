@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+    <!--扫描数据库配置文件-->
+    <context:property-placeholder location="classpath:properties/db.properties"/>
+    <!--配置SqlSessionFactory-->
+    <bean class="org.mybatis.spring.SqlSessionFactoryBean" id="sqlSessionFactory">
+        <!--        加载mybatis全局配置文件-->
+        <property name="configLocation" value="classpath:mybatis/mybatis-config.xml"/>
+        <!--        引用数据库-->
+        <property name="dataSource" ref="dataSource"/>
+        <!--        配置别名包扫描-->
+        <property name="typeAliasesPackage" value="com.gxa.internetfinance.pojo"/>
+        <!--        mapper.xml文件的包-->
+        <property name="mapperLocations" value="classpath:mybatis/mapper/*Mapper.xml"/>
+
+
+        <!-- 注意其他配置 -->
+        <property name="plugins">
+            <array>
+                <bean class="com.github.pagehelper.PageInterceptor">
+                    <property name="properties">
+                        <!--使用下面的方式配置参数，一行配置一个 -->
+                        <value>
+                            helperDialect=mysql
+                        </value>
+                    </property>
+                </bean>
+            </array>
+        </property>
+
+    </bean>
+    <!--    配置Mapper接口包扫描-->
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <!--扫描所有mapper接口 ，加入到ioc容器中 -->
+        <property name="basePackage" value="com.gxa.internetfinance.mapper"/>
+    </bean>
+    <!--    配置数据库-->
+    <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource">
+<!--        <property name="driver" ref="driver"/>-->
+        <property name="driverClassName" value="${druid.driver}"/>
+        <property name="url" value="${druid.url}"/>
+        <property name="username" value="${druid.username}"/>
+        <property name="password" value="${druid.password}"/>
+        <!--        初始化连接数-->
+        <property name="initialSize" value="1"/>
+        <!--        最小空闲连接数（至少会存在一个与数据库的连接资源）-->
+        <property name="minIdle" value="1"/>
+        <!--        最大活动连接数（至多存在与数据库的连接资源）-->
+        <property name="maxActive" value="5"/>
+    </bean>
+    <!--    <bean id="driver" class="com.mysql.cj.jdbc.Driver"/>-->
+</beans>

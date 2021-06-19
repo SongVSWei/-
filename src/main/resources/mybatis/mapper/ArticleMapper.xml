@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gxa.internetfinance.mapper.ArticleMapper">
+    <resultMap id="ArticleResultMap" type="com.gxa.internetfinance.pojo.po.Article">
+        <id column="article_id" jdbcType="INTEGER" property="id"/>
+        <result column="article_name" jdbcType="VARCHAR" property="name"/>
+        <result column="article_desc" jdbcType="VARCHAR" property="desc"/>
+        <result column="article_img" jdbcType="VARCHAR" property="img"/>
+        <result column="article_Url" jdbcType="VARCHAR" property="url"/>
+        <result column="article_sort" jdbcType="INTEGER" property="sort"/>
+        <result column="article_inUse" jdbcType="BIT" property="inUse"/>
+        <result column="article_inTop" jdbcType="BIT" property="inTop"/>
+        <result column="article_releaseTime" jdbcType="DATE" property="releaseTime"/>
+        <result column="article_author" jdbcType="VARCHAR" property="author"/>
+        <result column="article_introduce" jdbcType="VARCHAR" property="introduce"/>
+        <result column="article_source" jdbcType="VARCHAR" property="source"/>
+        <result column="article_context" jdbcType="VARCHAR" property="context"/>
+    </resultMap>
+<!--    定义几个后面常用的SQL片段语句-->
+    <sql id="Rotation_Column">
+#     rotation_id,rotation_name,rotation_desc,
+#     rotation_img,rotation_Url,rotation_sort,rotation_inUse,rotation_startTime,
+#     rotation_stopTime
+</sql>
+    <select id="selectComprehensive" parameterType="map" resultMap="ArticleResultMap">
+     select *
+    from tb_article
+        <where>
+            <if test="desc!=null and desc != '' ">
+                and article_desc= #{desc}
+            </if>
+            <if test="name!=null and name != '' ">
+                and article_name  like concat('%', #{name}, '%')
+            </if>
+            <if test="inUse!=2">
+                and article_inUse =#{inUse}
+            </if>
+
+        </where>
+        limit   #{page},#{size}
+
+
+    </select>
+    <select id="selectCount" parameterType="map" resultType="int">
+        select count(*)
+        from tb_article
+        <where>
+            <if test="desc!=null and desc != '' ">
+                and article_desc= #{desc}
+            </if>
+            <if test="name!=null and name != '' ">
+                and article_name  like concat('%', #{name}, '%')
+            </if>
+            <if test="inUse!=2">
+                and article_inUse =#{inUse}
+            </if>
+
+
+        </where>
+
+
+
+    </select>
+
+    <update id="updateByEditAll" parameterType="com.gxa.internetfinance.pojo.po.Article">
+       update tb_article
+        <set>
+            <trim suffixOverrides=",">
+            <if test="name!=null and name != '' ">
+                article_name = #{name},
+            </if>
+            <if test="desc!=null and desc != '' ">
+                article_desc= #{desc},
+            </if>
+            <if test="img!=null and img != '' ">
+                article_img = #{img},
+            </if>
+           <if test="releaseTime!=null ">
+               article_releaseTime=#{releaseTime},
+           </if>
+           <if test="context!=null and context!=''">
+           article_context=#{context},
+            </if>
+             <if test="inUse==true or inUse==false">
+           article_inUse=#{inUse},
+             </if>
+
+             <if test="sort!=null and sort!=''">
+           article_sort=#{sort},
+            </if>
+             <if test="Url!=null and Url!=''">
+           article_Url=#{Url},
+            </if>
+            <if test="author!=null and author!=''">
+                article_author=#{author},
+            </if>
+            <if test="introduce!=null and introduce!=''">
+                article_introduce=#{introduce},
+            </if>
+            <if test="inTop==true or inTop==false">
+                article_inTop=#{inTop},
+            </if>
+
+            <if test="source!=null and source!=''">
+                article_source=#{source},
+            </if>
+            </trim>
+        </set>
+        where article_id=#{id}
+
+    </update>
+
+    <delete id="deleteById" parameterType="Integer">
+        DELETE FROM tb_article  WHERE article_id = #{param1}
+    </delete>
+
+    <insert id="insertByArticle" parameterType="com.gxa.internetfinance.pojo.po.Article">
+            insert into tb_article
+            <trim prefix="(" suffix=")" suffixOverrides=",">
+                <if test="name!=null and name != '' ">
+                    article_name,
+                </if>
+                <if test="desc!=null and desc != '' ">
+                    article_desc,
+                </if>
+                <if test="img!=null and img != '' ">
+                    article_img ,
+                </if>
+                <if test="releaseTime!=null">
+                    article_releaseTime,
+                </if>
+                <if test="context!=null and context!=''">
+                    article_context,
+                </if>
+                <if test="inUse==true or inUse==false">
+                    article_inUse,
+                </if>
+                <if test="sort!=null and sort!=''">
+                    article_sort,
+                </if>
+                <if test="Url!=null and Url!=''">
+                    article_Url,
+                </if>
+                <if test="author!=null and author!=''">
+                    article_author,
+                </if>
+                <if test="introduce!=null and introduce!=''">
+                    article_introduce,
+                </if>
+                <if test="inTop==true or inTop==false">
+                    article_inTop,
+                </if>
+                <if test="source!=null and source!=''">
+                    article_source,
+                </if>
+            </trim>
+            <trim prefix="values(" suffix=")" suffixOverrides=",">
+                <if test="name!=null and name != '' ">
+                   #{name},
+                </if>
+                <if test="desc!=null and desc != '' ">
+                    #{desc},
+                </if>
+                <if test="img!=null and img != '' ">
+                    #{img},
+                </if>
+                <if test="releaseTime!=null">
+                    #{releaseTime},
+                </if>
+                <if test="context!=null and context!=''">
+                   #{context},
+                </if>
+                <if test="inUse==true or inUse==false">
+                    #{inUse},
+                </if>
+                <if test="sort!=null and sort!=''">
+                   #{sort},
+                </if>
+                <if test="Url!=null and Url!=''">
+                    #{Url},
+                </if>
+                <if test="author!=null and author!=''">
+                    #{author},
+                </if>
+                <if test="introduce!=null and introduce!=''">
+                    #{introduce},
+                </if>
+                <if test="inTop==true or inTop==false">
+                    #{inTop},
+                </if>
+                <if test="source!=null and source!=''">
+                    #{source},
+                </if>
+
+            </trim>
+
+    </insert>
+
+</mapper>

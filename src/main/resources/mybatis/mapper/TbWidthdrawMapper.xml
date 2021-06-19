@@ -1,0 +1,272 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gxa.internetfinance.mapper.TbWidthdrawMapper">
+
+    <resultMap type="com.gxa.internetfinance.pojo.po.TbWidthdraw" id="TbWidthdrawMap">
+        <result property="tbWidthdrawId" column="tb_widthdraw_id" jdbcType="INTEGER"/>
+        <result property="tbWidthdrawUserPhone" column="tb_widthdraw_user_phone" jdbcType="VARCHAR"/>
+        <result property="tbWidthdrawAmount" column="tb_widthdraw_amount" jdbcType="NUMERIC"/>
+        <result property="tbWidthdrawPoundage" column="tb_widthdraw_poundage" jdbcType="NUMERIC"/>
+        <result property="tbWidhtdrawReceivedMoney" column="tb_widhtdraw_received_money" jdbcType="NUMERIC"/>
+        <result property="tbWidthdrawBankcard" column="tb_widthdraw_bankcard" jdbcType="VARCHAR"/>
+        <result property="tbWidthdrawAuditor" column="tb_widthdraw_auditor" jdbcType="VARCHAR"/>
+        <result property="tbWidthdrawAuditStatus" column="tb_widthdraw_audit_status" jdbcType="INTEGER"/>
+        <result property="tbWidthdrawAuditTime" column="tb_widthdraw_audit_time" jdbcType="TIMESTAMP"/>
+        <result property="tbWidthdrawCreateTime" column="tb_widthdraw_create_time" jdbcType="TIMESTAMP"/>
+        <result property="tbWidthdrawUpdateTime" column="tb_widthdraw_update_time" jdbcType="TIMESTAMP"/>
+        <result property="tbWidthdrawIsDeleted" column="tb_widthdraw_is_deleted" jdbcType="INTEGER"/>
+        <result property="tbWidthdrawDesc" column="tb_widthdraw_desc" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <!--提现记录的map-->
+    <resultMap type="com.gxa.internetfinance.pojo.vo.WithdrawRecordVo" id="TbWidthdrawTransactionMap">
+        <result property="tbWidthdrawUserPhone" column="tb_widthdraw_user_phone" jdbcType="VARCHAR"/>
+        <result property="tbWidthdrawAmount" column="tb_widthdraw_amount" jdbcType="NUMERIC"/>
+        <result property="tbWidthdrawBankcard" column="tb_widthdraw_bankcard" jdbcType="VARCHAR"/>
+        <result property="tbWidthdrawCreateTime" column="tb_widthdraw_create_time" jdbcType="TIMESTAMP"/>
+        <result property="tbTransactionIsSuccess" column="tb_transaction_is_success" jdbcType="INTEGER"/>
+
+    </resultMap>
+
+    <!--提现信息的map-->
+    <resultMap type="com.gxa.internetfinance.pojo.vo.WithdrawInfoVo" id="TbWidthdrawInfoMap">
+        <result property="tbWidthdrawId" column="tb_widthdraw_id" jdbcType="INTEGER"/>
+        <result property="tbWidthdrawUserPhone" column="tb_widthdraw_user_phone" jdbcType="VARCHAR"/>
+        <result property="tbWidthdrawAmount" column="tb_widthdraw_amount" jdbcType="NUMERIC"/>
+        <result property="tbWidthdrawPoundage" column="tb_widthdraw_poundage" jdbcType="NUMERIC"/>
+        <result property="tbWidhtdrawReceivedMoney" column="tb_widhtdraw_received_money" jdbcType="NUMERIC"/>
+        <result property="tbWidthdrawBankcard" column="tb_widthdraw_bankcard" jdbcType="VARCHAR"/>
+        <result property="tbWidthdrawCreateTime" column="tb_widthdraw_create_time" jdbcType="TIMESTAMP"/>
+        <!--用户真实姓名-->
+        <result property="userName" column="user_name" jdbcType="VARCHAR"/>
+        <result property="userRole" column="user_role" jdbcType="VARCHAR"/>
+        <result property="userdetailName" column="userdetail_name" jdbcType="VARCHAR"/>
+
+
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="TbWidthdrawMap">
+        select
+        tb_widthdraw_id, tb_widthdraw_user_phone, tb_widthdraw_amount, tb_widthdraw_poundage,
+        tb_widhtdraw_received_money, tb_widthdraw_bankcard, tb_widthdraw_auditor, tb_widthdraw_audit_status,
+        tb_widthdraw_audit_time, tb_widthdraw_create_time, tb_widthdraw_update_time, tb_widthdraw_is_deleted
+        from internetfinance.tb_widthdraw
+        where tb_widthdraw_id = #{tbWidthdrawId}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="TbWidthdrawMap">
+        select
+        tb_widthdraw_id, tb_widthdraw_user_phone, tb_widthdraw_amount, tb_widthdraw_poundage,
+        tb_widhtdraw_received_money, tb_widthdraw_bankcard, tb_widthdraw_auditor, tb_widthdraw_audit_status,
+        tb_widthdraw_audit_time, tb_widthdraw_create_time, tb_widthdraw_update_time, tb_widthdraw_is_deleted
+        from internetfinance.tb_widthdraw
+        limit #{offset}, #{limit}
+    </select>
+
+    <!--通过实体作为筛选条件查询-->
+    <select id="queryAll" resultMap="TbWidthdrawMap">
+        select
+        tb_widthdraw_id, tb_widthdraw_user_phone, tb_widthdraw_amount, tb_widthdraw_poundage,
+        tb_widhtdraw_received_money, tb_widthdraw_bankcard, tb_widthdraw_auditor, tb_widthdraw_audit_status,
+        tb_widthdraw_audit_time, tb_widthdraw_create_time, tb_widthdraw_update_time, tb_widthdraw_is_deleted
+        from internetfinance.tb_widthdraw
+        <where>
+            <if test="tbWidthdrawId != null">
+                and tb_widthdraw_id = #{tbWidthdrawId}
+            </if>
+            <if test="tbWidthdrawUserPhone != null and tbWidthdrawUserPhone != ''">
+                and tb_widthdraw_user_phone = #{tbWidthdrawUserPhone}
+            </if>
+            <if test="tbWidthdrawAmount != null">
+                and tb_widthdraw_amount = #{tbWidthdrawAmount}
+            </if>
+            <if test="tbWidthdrawPoundage != null">
+                and tb_widthdraw_poundage = #{tbWidthdrawPoundage}
+            </if>
+            <if test="tbWidhtdrawReceivedMoney != null">
+                and tb_widhtdraw_received_money = #{tbWidhtdrawReceivedMoney}
+            </if>
+            <if test="tbWidthdrawBankcard != null and tbWidthdrawBankcard != ''">
+                and tb_widthdraw_bankcard = #{tbWidthdrawBankcard}
+            </if>
+            <if test="tbWidthdrawAuditor != null and tbWidthdrawAuditor != ''">
+                and tb_widthdraw_auditor = #{tbWidthdrawAuditor}
+            </if>
+            <if test="tbWidthdrawAuditStatus != null">
+                and tb_widthdraw_audit_status = #{tbWidthdrawAuditStatus}
+            </if>
+            <if test="tbWidthdrawAuditTime != null">
+                and tb_widthdraw_audit_time = #{tbWidthdrawAuditTime}
+            </if>
+            <if test="tbWidthdrawCreateTime != null">
+                and tb_widthdraw_create_time = #{tbWidthdrawCreateTime}
+            </if>
+            <if test="tbWidthdrawUpdateTime != null">
+                and tb_widthdraw_update_time = #{tbWidthdrawUpdateTime}
+            </if>
+            <if test="tbWidthdrawIsDeleted != null">
+                and tb_widthdraw_is_deleted = #{tbWidthdrawIsDeleted}
+            </if>
+        </where>
+    </select>
+
+    <!--通过用户手机号查询两个时间区间的提现记录-->
+    <select id="queryByPhone" resultMap="TbWidthdrawTransactionMap">
+        select tb_widthdraw_user_phone,tb_widthdraw_amount,tb_widthdraw_bankcard,tb_widthdraw_create_time,trans.tb_transaction_is_success
+        from tb_widthdraw wid
+        left join tb_transaction trans on trans.tb_transaction_id=wid.tb_widthdraw_transaction_id
+        where tb_widthdraw_user_phone=#{phone} and tb_widthdraw_create_time > #{startTime}
+          and tb_widthdraw_create_time &lt; #{endTime}
+    </select>
+
+    <!--通过提现记录id查询信息（多表）-->
+    <select id="findById" resultMap="TbWidthdrawInfoMap">
+        select tb_widthdraw_id, tb_widthdraw_user_phone, tb_widthdraw_amount, tb_widthdraw_poundage,
+               tb_widhtdraw_received_money, tb_widthdraw_bankcard,tb_widthdraw_create_time,
+               usr.user_name,tu.userdetail_name
+        from tb_widthdraw wid
+             left join tb_user usr on usr.user_phone=wid.tb_widthdraw_user_phone
+            left join tb_userdetail tu on wid.tb_widthdraw_bankcard = tu.userdetail_bankCard
+        where tb_widthdraw_id=#{tbWidthdrawId}
+    </select>
+
+    <!--根据条件分页查询-->
+    <select id="queryByParam" resultType="com.gxa.internetfinance.pojo.vo.WithdrawVo">
+        select tb_widthdraw_id, tb_widthdraw_user_phone, tb_widthdraw_amount, tb_widthdraw_poundage,
+               tb_widhtdraw_received_money, tb_widthdraw_bankcard, tb_widthdraw_auditor, tb_widthdraw_audit_status,
+               tb_widthdraw_audit_time, tb_widthdraw_create_time,usr.user_name,usr.user_role,us.userdetail_branchName,
+               tr.tb_transaction_serial_number,tr.tb_transaction_publish_time
+        from tb_widthdraw wid
+        left join tb_user usr on usr.user_phone=wid.tb_widthdraw_user_phone
+        left join tb_userdetail us on us.userdetail_bankCard = wid.tb_widthdraw_bankcard
+        left join tb_transaction tr on tr.tb_transaction_id = wid.tb_widthdraw_transaction_id
+        <where>
+            <if test="withdrawParam.id != null">
+                tb_widthdraw_id = #{withdrawParam.id}
+            </if>
+            <if test="withdrawParam.phone != null and withdrawParam.phone !=''">
+                and tb_widthdraw_user_phone like concat('%',#{withdrawParam.phone},'%')
+            </if>
+            <if test="withdrawParam.name != null and withdrawParam.name !=''">
+                and usr.user_name like concat('%',#{withdrawParam.name},'%')
+            </if>
+            <if test="withdrawParam.bankCard != null and withdrawParam.bankCard != ''">
+                and tb_widthdraw_bankcard like concat('%',#{withdrawParam.bankCard},'%')
+            </if>
+            <if test="withdrawParam.backName != null and withdrawParam.backName != ''">
+                and us.userdetail_branchName like concat('%',#{withdrawParam.backName},'%')
+            </if>
+            <if test="withdrawParam.startTime != null and withdrawParam.startTime != ''">
+                and  tb_widthdraw_create_time >= #{withdrawParam.startTime}
+            </if>
+            <if test="withdrawParam.endTime != null and withdrawParam.endTime !=''">
+                and tb_widthdraw_create_time &lt;= #{withdrawParam.startTime}
+            </if>
+
+
+        </where>
+    </select>
+
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="tbWidthdrawId" useGeneratedKeys="true">
+        insert into internetfinance.tb_widthdraw(tb_widthdraw_user_phone, tb_widthdraw_amount, tb_widthdraw_poundage,
+        tb_widhtdraw_received_money, tb_widthdraw_bankcard, tb_widthdraw_auditor, tb_widthdraw_audit_status,
+        tb_widthdraw_audit_time, tb_widthdraw_create_time, tb_widthdraw_update_time, tb_widthdraw_is_deleted)
+        values (#{tbWidthdrawUserPhone}, #{tbWidthdrawAmount}, #{tbWidthdrawPoundage}, #{tbWidhtdrawReceivedMoney},
+        #{tbWidthdrawBankcard}, #{tbWidthdrawAuditor}, #{tbWidthdrawAuditStatus}, #{tbWidthdrawAuditTime},
+        #{tbWidthdrawCreateTime}, #{tbWidthdrawUpdateTime}, #{tbWidthdrawIsDeleted})
+    </insert>
+
+    <insert id="insertBatch" keyProperty="tbWidthdrawId" useGeneratedKeys="true">
+        insert into internetfinance.tb_widthdraw(tb_widthdraw_user_phone, tb_widthdraw_amount, tb_widthdraw_poundage,
+        tb_widhtdraw_received_money, tb_widthdraw_bankcard, tb_widthdraw_auditor, tb_widthdraw_audit_status,
+        tb_widthdraw_audit_time, tb_widthdraw_create_time, tb_widthdraw_update_time, tb_widthdraw_is_deleted)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+            (#{entity.tbWidthdrawUserPhone}, #{entity.tbWidthdrawAmount}, #{entity.tbWidthdrawPoundage},
+            #{entity.tbWidhtdrawReceivedMoney}, #{entity.tbWidthdrawBankcard}, #{entity.tbWidthdrawAuditor},
+            #{entity.tbWidthdrawAuditStatus}, #{entity.tbWidthdrawAuditTime}, #{entity.tbWidthdrawCreateTime},
+            #{entity.tbWidthdrawUpdateTime}, #{entity.tbWidthdrawIsDeleted})
+        </foreach>
+    </insert>
+
+    <insert id="insertOrUpdateBatch" keyProperty="tbWidthdrawId" useGeneratedKeys="true">
+        insert into internetfinance.tb_widthdraw(tb_widthdraw_user_phone, tb_widthdraw_amount, tb_widthdraw_poundage,
+        tb_widhtdraw_received_money, tb_widthdraw_bankcard, tb_widthdraw_auditor, tb_widthdraw_audit_status,
+        tb_widthdraw_audit_time, tb_widthdraw_create_time, tb_widthdraw_update_time, tb_widthdraw_is_deleted)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+            (#{entity.tbWidthdrawUserPhone}, #{entity.tbWidthdrawAmount}, #{entity.tbWidthdrawPoundage},
+            #{entity.tbWidhtdrawReceivedMoney}, #{entity.tbWidthdrawBankcard}, #{entity.tbWidthdrawAuditor},
+            #{entity.tbWidthdrawAuditStatus}, #{entity.tbWidthdrawAuditTime}, #{entity.tbWidthdrawCreateTime},
+            #{entity.tbWidthdrawUpdateTime}, #{entity.tbWidthdrawIsDeleted})
+        </foreach>
+        on duplicate key update
+        tb_widthdraw_user_phone = values(tb_widthdraw_user_phone) , tb_widthdraw_amount = values(tb_widthdraw_amount) ,
+        tb_widthdraw_poundage = values(tb_widthdraw_poundage) , tb_widhtdraw_received_money =
+        values(tb_widhtdraw_received_money) , tb_widthdraw_bankcard = values(tb_widthdraw_bankcard) ,
+        tb_widthdraw_auditor = values(tb_widthdraw_auditor) , tb_widthdraw_audit_status =
+        values(tb_widthdraw_audit_status) , tb_widthdraw_audit_time = values(tb_widthdraw_audit_time) ,
+        tb_widthdraw_create_time = values(tb_widthdraw_create_time) , tb_widthdraw_update_time =
+        values(tb_widthdraw_update_time) , tb_widthdraw_is_deleted = values(tb_widthdraw_is_deleted)
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update internetfinance.tb_widthdraw
+        <set>
+            <if test="tbWidthdrawUserPhone != null and tbWidthdrawUserPhone != ''">
+                tb_widthdraw_user_phone = #{tbWidthdrawUserPhone},
+            </if>
+            <if test="tbWidthdrawAmount != null">
+                tb_widthdraw_amount = #{tbWidthdrawAmount},
+            </if>
+            <if test="tbWidthdrawPoundage != null">
+                tb_widthdraw_poundage = #{tbWidthdrawPoundage},
+            </if>
+            <if test="tbWidhtdrawReceivedMoney != null">
+                tb_widhtdraw_received_money = #{tbWidhtdrawReceivedMoney},
+            </if>
+            <if test="tbWidthdrawBankcard != null and tbWidthdrawBankcard != ''">
+                tb_widthdraw_bankcard = #{tbWidthdrawBankcard},
+            </if>
+            <if test="tbWidthdrawAuditor != null and tbWidthdrawAuditor != ''">
+                tb_widthdraw_auditor = #{tbWidthdrawAuditor},
+            </if>
+            <if test="tbWidthdrawAuditStatus != null">
+                tb_widthdraw_audit_status = #{tbWidthdrawAuditStatus},
+            </if>
+            <if test="tbWidthdrawAuditTime != null">
+                tb_widthdraw_audit_time = #{tbWidthdrawAuditTime},
+            </if>
+            <if test="tbWidthdrawCreateTime != null">
+                tb_widthdraw_create_time = #{tbWidthdrawCreateTime},
+            </if>
+            <if test="tbWidthdrawUpdateTime != null">
+                tb_widthdraw_update_time = #{tbWidthdrawUpdateTime},
+            </if>
+            <if test="tbWidthdrawIsDeleted != null">
+                tb_widthdraw_is_deleted = #{tbWidthdrawIsDeleted},
+            </if>
+        </set>
+        where tb_widthdraw_id = #{tbWidthdrawId}
+    </update>
+    <!--提现审核-->
+    <update id="updateAudit">
+        update tb_widthdraw
+        set tb_widthdraw_audit_status = #{tbWidthdraw.tbWidthdrawAuditStatus},tb_widthdraw_auditor=#{tbWidthdraw.tbWidthdrawAuditor},
+            tb_widthdraw_audit_time = #{tbWidthdraw.tbWidthdrawAuditTime},tb_widthdraw_update_time = #{tbWidthdraw.tbWidthdrawUpdateTime},
+            tb_widthdraw_desc = #{tbWidthdraw.tbWidthdrawDesc}
+        where tb_widthdraw_id = #{tbWidthdraw.tbWidthdrawId}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from internetfinance.tb_widthdraw where tb_widthdraw_id = #{tbWidthdrawId}
+    </delete>
+
+</mapper>
+

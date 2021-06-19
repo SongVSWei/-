@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gxa.internetfinance.mapper.UserRefferVoMapper">
+    <resultMap id="BaseResultMap" type="com.gxa.internetfinance.pojo.vo.UserRefferVo">
+        <result column="refferPhone"  property="refferPhone"/>
+        <result column="userPhone"  property="userPhone"/>
+        <result column="user_name" property="refferName"/>
+        <result column="ies_triggerEvent"  property="triggerEvent"/>
+        <result column="ies_bonusType"  property="bonus"/>
+        <result column="experience_amount" property="amount"/>
+        <result column="experience_AnnualInterestRate" property="AnnualInterestRate"/>
+        <result column="ies_updateTime"  property="getTime"/>
+        <result column="ies_bonusObject"  property="bonusObject"/>
+        <result column="ies_status"  property="status"/>
+        <result column="ies_updateTime" property="startTime"/>
+        <result column="ies_updateTime" property="endTime"/>
+    </resultMap>
+    <select id="selectByPhoneOrName" resultMap="BaseResultMap">
+        select u.user_phone as userPhone ,s.user_phone as refferPhone ,s.user_name ,
+        i.ies_triggerEvent ,i.ies_bonusType,i.ies_status,e.experience_amount,experience_AnnualInterestRate,
+        ies_updateTime,ies_bonusObject,ies_status
+        from tb_user u,tb_user s,tb_experience e,tb_invitationeventstrategy i
+        <where>
+            u.user_name=s.user_referrer
+            <if test="refferName!=null">
+                <bind name="refferName" value="'%'+refferName+'%'"/>
+                and s.user_name like #{refferName}
+            </if>
+            <if test="userPhone!=null">
+                <bind name="userPhone" value="'%'+userPhone+'%'"/>
+                and s.user_phone like #{userPhone}
+            </if>
+            <if test="bonus!=null">
+                <bind name="resource" value="'%'+bonus+'%'"/>
+                and i.ies_bonusType like #{bonus}
+            </if>
+            <if test="status!=null">
+                <bind name="status" value="'%'+status+'%'"/>
+                and ies_status like #{status}
+            </if>
+            <if test="startTime!=null">
+                <bind name="getTime" value="'%'+getTime+'%'"/>
+                and ies_updateTime BETWEEN #{startTime} and #{endTime}
+            </if>
+        </where>
+        limit #{current},#{limit}
+    </select>
+</mapper>

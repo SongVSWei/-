@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gxa.internetfinance.mapper.RepayRecordMapper">
+    <resultMap id="RepayRecordMap" type="com.gxa.internetfinance.pojo.vo.RepayRecordVO">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="repay_status" jdbcType="VARCHAR" property="repayStatus"/>
+        <result column="repay_way" jdbcType="VARCHAR" property="repayWay"/>
+        <result column="repay_man" jdbcType="VARCHAR" property="repayMan"/>
+        <association property="repayManage" javaType="RepayManage" resultMap="com.gxa.internetfinance.mapper.RepayManageMapper.RepayMap">
+        </association>
+        <association property="borrowBaseInfo" javaType="BorrowBaseInfo" resultMap="com.gxa.internetfinance.mapper.BorrowBaseInfoMapper.BaseResultMap">
+        </association>
+    </resultMap>
+
+    <!--    <select id="selectAll" parameterType="integer" resultMap="ParameterMap">-->
+    <!--        select * from tb_parameter limit #{arg0};-->
+    <!--    </select>-->
+
+    <select id="selectBypage" resultMap="RepayRecordMap">
+        SELECT rs.id ,loan_man,phone,name,total,repay_term,
+        interest_way,repay_stage,repay_expire_time,repay_actual_Time,
+        repay_expect_amount,repay_actual_amount,repay_principal,loan_mgr_interest_rate,
+        overdue,rs.repay_status,repay_way,repay_man
+        FROM tb_repayrecord rs
+        LEFT JOIN tb_repay r
+        ON r.repay_id = rs.repay_id
+        LEFT JOIN tb_borrow_base_info b
+        ON r.base_id = b.id AND r.phone = b.user_phone
+        <where>
+            <if test="loanMan != null">
+                <bind name="loanMan" value="'%'+loanMan+'%'"/>
+                   and loan_man like #{loanMan}
+            </if>
+            <if test="phone !=null">
+                <bind name="phone" value="'%'+phone+'%'"/>
+                    and phone like #{phone}
+            </if>
+            <if test="status != null">
+                <bind name="status" value="'%'+status+'%'"/>
+                    and repay_status like #{status}
+            </if>
+
+        </where>
+        limit #{page},#{size}
+    </select>
+
+<!--    <select id="select" resultMap="com.gxa.internetfinance.mapper.BorrowBaseInfoMapper.BaseResultMap">-->
+<!--        select name,total,Interest_way,loan_mgr_interest_rate,overdue-->
+<!--        from tb_borrow_base_info-->
+<!--    </select>-->
+    <select id="selectAll" resultMap="RepayRecordMap">
+        SELECT rs.id ,loan_man,phone,name,total,repay_term,
+               interest_way,repay_stage,repay_expire_time,repay_actual_Time,
+               repay_expect_amount,repay_actual_amount,repay_principal,loan_mgr_interest_rate,
+               overdue,rs.repay_status,repay_way,repay_man
+        FROM tb_repayrecord rs
+                 LEFT JOIN tb_repay r
+                           ON r.repay_id = rs.repay_id
+                 LEFT JOIN tb_borrow_base_info b
+                           ON r.base_id = b.id AND r.phone = b.user_phone
+
+    </select>
+
+
+
+</mapper>

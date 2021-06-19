@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gxa.internetfinance.mapper.RotationMapper">
+    <resultMap id="RotationResultMap" type="com.gxa.internetfinance.pojo.po.Rotation">
+        <id column="rotation_id" jdbcType="INTEGER" property="id"/>
+        <result column="rotation_name" jdbcType="VARCHAR" property="name"/>
+        <result column="rotation_desc" jdbcType="VARCHAR" property="desc"/>
+        <result column="rotation_img" jdbcType="VARCHAR" property="img"/>
+        <result column="rotation_Url" jdbcType="VARCHAR" property="url"/>
+        <result column="rotation_sort" jdbcType="INTEGER" property="sort"/>
+        <result column="rotation_inUse" jdbcType="BIT" property="inUse"/>
+        <result column="rotation_startTime" jdbcType="DATE" property="startTime"/>
+        <result column="rotation_stopTime" jdbcType="DATE" property="stopTime"/>
+    </resultMap>
+<!--    定义几个后面常用的SQL片段语句-->
+    <sql id="Rotation_Column">
+    rotation_id,rotation_name,rotation_desc,
+    rotation_img,rotation_Url,rotation_sort,rotation_inUse,rotation_startTime,
+    rotation_stopTime
+</sql>
+    <select id="selectComprehensive" parameterType="map" resultMap="RotationResultMap">
+     select *
+    from tb_rotation
+        <where>
+            <if test="desc!=null and desc != '' ">
+                and rotation_desc= #{desc}
+            </if>
+            <if test="name!=null and name != '' ">
+                and rotation_name  like concat('%', #{name}, '%')
+            </if>
+            <if test="inUse==true">
+                and rotation_inUse = 1
+            </if>
+            <if test="inUse==false">
+                and rotation_inUse = 0
+            </if>
+
+        </where>
+        limit   #{page},#{size}
+
+
+    </select>
+    <select id="selectCount" parameterType="map" resultType="int">
+        select count(*)
+        from tb_rotation
+        <where>
+            <if test="desc!=null and desc != '' ">
+                and rotation_desc= #{desc}
+            </if>
+            <if test="name!=null and name != '' ">
+                and rotation_name  like concat('%', #{name}, '%')
+            </if>
+            <if test="inUse==true">
+                and rotation_inUse = 1
+            </if>
+            <if test="inUse==false">
+                and rotation_inUse = 0
+            </if>
+
+        </where>
+
+
+
+    </select>
+
+    <update id="updateByEditAll" parameterType="com.gxa.internetfinance.pojo.po.Rotation">
+       update tb_rotation
+        <set>
+            <trim suffixOverrides=",">
+            <if test="name!=null and name != '' ">
+                rotation_name = #{name},
+            </if>
+            <if test="desc!=null and desc != '' ">
+                rotation_desc= #{desc},
+            </if>
+            <if test="img!=null and img != '' ">
+                rotation_img = #{img},
+            </if>
+           <if test="startTime!=null ">
+               rotation_startTime=#{startTime},
+           </if>
+       <if test="stopTime!=null ">
+           rotation_stopTime=#{stopTime},
+       </if>
+       <if test="inUse==null or inUse==false">
+           rotation_inUse=#{inUse},
+       </if>
+
+       <if test="sort!=null and sort!=''">
+           rotation_sort=#{sort},
+       </if>
+       <if test="Url!=null and Url!=''">
+           rotation_Url=#{Url},
+       </if>
+            </trim>
+        </set>
+        where rotation_id=#{id}
+
+    </update>
+
+    <delete id="deleteById" parameterType="Integer">
+        DELETE FROM tb_rotation  WHERE rotation_id = #{param1}
+    </delete>
+
+    <insert id="insertByRotation" parameterType="com.gxa.internetfinance.pojo.po.Rotation">
+            insert into tb_rotation
+            <trim prefix="(" suffix=")" suffixOverrides=",">
+                <if test="name!=null and name != '' ">
+                   rotation_name,
+                </if>
+                <if test="desc!=null and desc != '' ">
+                    rotation_desc,
+                </if>
+                <if test="img!=null and img!='' ">
+                    rotation_img,
+                </if>
+                <if test="startTime!=null ">
+                    rotation_startTime,
+                </if>
+                <if test="stopTime!=null  ">
+                    rotation_stopTime,
+                </if>
+                <if test="inUse==true or inUse==false">
+                    rotation_inUse,
+                </if>
+                <if test="sort!=null and sort!=''">
+                    rotation_sort,
+                </if>
+                <if test="Url!=null and Url!=''">
+                    rotation_Url,
+                </if>
+            </trim>
+            <trim prefix="values(" suffix=")" suffixOverrides=",">
+                <if test="name!=null and name!= '' ">
+                    #{name},
+                </if>
+                <if test="desc!=null and desc!= '' ">
+                    #{desc},
+                </if>
+                <if test="img!=null and img!=''">
+                    #{img},
+                </if>
+                <if test="startTime!=null">
+                    #{startTime},
+                </if>
+                <if test="stopTime!=null">
+                    #{stopTime},
+                </if>
+                <if test="inUse==true or inUse==false">
+                    #{inUse},
+                </if>
+                <if test="sort!=null and sort!=''">
+                    #{sort},
+                </if>
+                <if test="Url!=null and Url!=''">
+                    #{Url},
+                </if>
+            </trim>
+
+    </insert>
+
+</mapper>

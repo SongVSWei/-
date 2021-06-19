@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gxa.internetfinance.mapper.HongbaoMapper">
+    <resultMap id="HongbaoMap" type="com.gxa.internetfinance.pojo.po.Hongbao">
+        <id column="hongbao_id" property="id" javaType="Integer" jdbcType="INTEGER"/>
+        <result column="hongbao_name" property="name" javaType="String"></result>
+        <result column="hongbao_type" property="type" javaType="String"/>
+        <result column="hongbao_useExpire" property="useExpire" javaType="java.util.Date"></result>
+        <result column="hongbao_amount" property="amount" javaType="Integer"></result>
+        <result column="hongbao_condition" property="condition" javaType="String"></result>
+        <result column="hongbao_collectNumber" property="collectNumber" javaType="Integer"></result>
+        <result column="hongbao_collectNumber" property="useNumber" javaType="Integer"></result>
+        <result column="hongbao_creatTime" property="creatTime" javaType="java.util.Date"></result>
+    </resultMap>
+    <insert id="insert" parameterType="com.gxa.internetfinance.pojo.po.Hongbao">
+        insert into tb_hongbao(hongbao_name, hongbao_type, hongbao_useExpire,
+                               hongbao_amount, hongbao_condition,
+                               hongbao_collectNumber,hongbao_useNumber
+                   ,hongbao_creatTime)
+        values (#{name},#{type},#{useExpire},
+                #{amount},#{condition},#{collectNumber},
+                #{useNumber},#{creatTime})
+    </insert>
+    <select id="selectById" parameterType="Integer" resultMap="HongbaoMap">
+        select * from tb_hongbao where hongbao_id=#{id}
+    </select>
+
+    <select id="pageCondition" resultMap="HongbaoMap">
+        select * from  tb_hongbao
+        <where>
+            <if test="name!=null">
+                <bind name="name" value="'%'+name+'%'"/>
+                and hongbao_name like #{name}
+            </if>
+            <if test="type!=null">
+                <bind name="type" value="'%'+type+'%'"/>
+                and hongbao_type like #{type}
+            </if>
+        </where>
+        order by hongbao_id desc
+        limit #{current},#{limit}
+    </select>
+
+</mapper>

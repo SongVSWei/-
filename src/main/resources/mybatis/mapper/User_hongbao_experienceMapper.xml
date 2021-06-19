@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gxa.internetfinance.mapper.User_hongbao_experienceMapper">
+    <resultMap id="BaseResultMap" type="com.gxa.internetfinance.pojo.vo.User_hongbao_experience">
+        <result column="hongbao_name" property="hongbaoName"/>
+        <result column="user_name"  property="userName"/>
+        <result column="user_phone"  property="userPhone"/>
+        <result column="user_resource" property="resource"/>
+        <result column="user_type" property="userType"></result>
+        <result column="experience_entitle"  property="entitle"/>
+        <result column="experience_amount"  property="amount"/>
+        <result column="experience_AnnualInterestRate" property="AnnualInterestRate"/>
+        <result column="status" property="status"></result>
+        <result column="getTime"  property="getTime"/>
+        <result column="expireTime"  property="expireTime"/>
+        <result column="money" property="money"></result>
+        <result column="useTime"  property="useTime"/>
+    </resultMap>
+    <select id="selectByPhoneOrName" resultMap="BaseResultMap">
+        select u.user_name,u.user_phone,user_resource,user_userType,hongbao_name,
+        experience_entitle,experience_amount,experience_AnnualInterestRate,
+        getTime,expireTime,useTime,status,money
+        from tb_user u,tb_experience e,tb_user_hongbao_experience uh,tb_hongbao h
+        <where>
+        u.user_id=uh.user_id
+        and e.experience_id=uh.experience_id
+        and h.hongbao_id=uh.hongbao_id
+            <if test="username!=null">
+                <bind name="username" value="'%'+username+'%'"/>
+                and u.user_name like #{username}
+            </if>
+            <if test="userPhone!=null">
+                <bind name="userPhone" value="'%'+userPhone+'%'"/>
+                and u.user_phone like #{userPhone}
+            </if>
+            <if test="hongbaoName!=null">
+                <bind name="hongbaoName" value="'%'+hongbaoName+'%'"/>
+                and hongbao_name like #{hongbaoName}
+            </if>
+            <if test="resource!=null">
+                <bind name="resource" value="'%'+resource+'%'"/>
+                and user_resource like #{resource}
+            </if>
+            <if test="userType!=null">
+                <bind name="userType" value="'%'+userType+'%'"/>
+                and user_userType like #{userType}
+            </if>
+            <if test="status!=null">
+                <bind name="status" value="'%'+status+'%'"/>
+                and status like #{status}
+            </if>
+        </where>
+    order by useTime desc
+    limit #{current},#{limit}
+    </select>
+</mapper>
